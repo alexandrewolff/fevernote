@@ -1,9 +1,10 @@
 import React, { Fragment, useState } from 'react'
+import axios from 'axios'
 
 import Input from '../UI/Input/Input'
 import Button from '../UI/Button/Button'
 
-const Authentication = ({ login }) => {
+const Authentication = ({ login, reportError }) => {
   const [showSignupMenu, setShowSignupMenu] = useState(false)
   const [fields, setFields] = useState({
     email: {
@@ -34,6 +35,21 @@ const Authentication = ({ login }) => {
 
   const switchMenuHandler = () => {
     setShowSignupMenu(prevIsSignup => !prevIsSignup)
+
+    const updatedFields = {
+      ...fields
+    }
+
+    for (const field in updatedFields) {
+      const updatedField = {
+        ...updatedFields[field]
+      }
+
+      updatedField.value = ''
+      updatedFields[field] = updatedField
+    }
+
+    setFields(updatedFields)
   }
 
   const changeHandler = (event, field) => {
@@ -51,6 +67,24 @@ const Authentication = ({ login }) => {
     setFields(updatedFields)
   }
 
+  const submitHandler = async (event) => {
+    event.preventDefault()
+
+    const endpoint = showSignupMenu ? 'user' : 'login'
+
+    const payload = {
+      email: fields.email.value,
+      password: fields.password.value
+    }
+
+    try {
+      const response = await axios.post(endpoint, payload)
+      login(response.token)
+    } catch (err) {
+      reportError(err)
+    }
+  }
+
   const fieldsElements = []
   for (const field in fields) {
     if (!showSignupMenu && field === 'passwordConfirmation') continue
@@ -65,38 +99,35 @@ const Authentication = ({ login }) => {
     )
   }
 
-  const formElements = (
-    <form onSubmit={(event) => event.preventDefault()}>
-      {fieldsElements}
-      <Button>{showSignupMenu ? 'SIGNUP' : 'SIGNIN'}</Button>
-    </form>
-  )
-
-  let menuElements = null
+  let menuSwitch = null
 
   if (showSignupMenu) {
-    menuElements = (
-      <div>
-        {formElements}
+    menuSwitch = (
+      <Fragment>
         <p>Don't have an account?</p>
-        <Button clickHandler={switchMenuHandler}>Create account</Button>
-      </div>
+        <p><a onClick={switchMenuHandler}>Create account</a></p>
+      </Fragment>
     )
   } else {
-    menuElements = (
-      <div>
-        {formElements}
+    menuSwitch = (
+      <Fragment>
         <p>Already have an account?</p>
-        <Button clickHandler={switchMenuHandler}>Sign in</Button>
-      </div>
+        <p><a onClick={switchMenuHandler}>Sign in</a></p>
+      </Fragment>
     )
   }
 
   return (
-    <Fragment>
-      {menuElements}
-      <Button>Try with guest account</Button>
-    </Fragment>
+    <div>
+      <form onSubmit={(event) => submitHandler(event)}>
+        {fieldsElements}
+        <Button>{showSignupMenu ? 'SIGNUP' : 'SIGNIN'}</Button>
+      </form>
+
+      {menuSwitch}
+      <p>or</p>
+      <p><a onClick={() => {}}>Try with a guest account!</a></p>
+    </div>
   )
 }
 

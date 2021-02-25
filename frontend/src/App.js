@@ -5,36 +5,45 @@ import Authentication from './components/Authentication/Authentication'
 import Client from './components/Client/Client'
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [token, setToken] = useState('')
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    const isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated'))
-    setIsAuthenticated(isAuthenticated)
-  }, [])
+    const localStorageToken = JSON.parse(localStorage.getItem('token'))
+    setToken(localStorageToken)
 
-  const login = () => {
-    setIsAuthenticated(true)
-    localStorage.setItem('isAuthenticated', 'true')
+    if (error) {
+      console.error('ERROR: ', error)
+    }
+  }, [token, error])
+
+  const login = (token) => {
+    setToken(token)
+    localStorage.setItem('token', token)
   }
 
   const logout = () => {
-    setIsAuthenticated(false)
-    localStorage.setItem('isAuthenticated', 'false')
+    setToken('')
+    localStorage.removeItem('token')
+  }
+
+  const reportError = (err) => {
+    setError(err)
   }
 
   let routes = null
 
-  if (isAuthenticated) {
+  if (token) {
     routes = (
       <Switch>
-        <Route path="/client" render={() => <Client logout={logout} />} />
+        <Route path="/client" render={() => <Client logout={logout} reportError={reportError} />} />
         <Redirect to="/client" />
       </Switch>
     )
   } else {
     routes = (
       <Switch>
-        <Route path="/authentication" render={() => <Authentication login={login} />} />
+        <Route path="/authentication" render={() => <Authentication login={login} reportError={reportError} />} />
         <Redirect to="/authentication" />
       </Switch>
     )
@@ -42,7 +51,7 @@ const App = () => {
 
   return (
     <div>
-      { routes }
+      {routes}
     </div>
   )
 }
