@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Client = ({ unAuth }) => {
+const Client = ({ logout }) => {
   return (
     <div>
 

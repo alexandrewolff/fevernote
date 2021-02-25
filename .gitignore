@@ -1,7 +1,8 @@
 ## GLOBAL ##
 
 # misc
-frontend/.DS_Store
+.DS_Store
+next-commit
 
 
 ## FRONTEND ##
