@@ -1,24 +1,33 @@
 import React, { Fragment } from 'react'
 
-const Input = ({ config, value, changeHandler }) => {
-  let inputElement = null
+const Input = ({ config, value, isValid, isTouched, changeHandler }) => {
+  let errorMessage = null
+  if (!isValid && isTouched) {
+    errorMessage = <p>{config.errorMessage}</p>
+  }
 
+  let inputElement = null
   switch (config.tag) {
     case ('input'):
-      inputElement = <input
-        type={config.type}
-        placeholder={config.placeholder}
-        value={value}
-        onChange={changeHandler}
-      />
+      inputElement = (
+        <div>
+          <input
+            type={config.type}
+            placeholder={config.placeholder}
+            value={value}
+            onChange={changeHandler}
+          />
+          {errorMessage}
+        </div>
+      )
       break
     default:
-      console.error('Missing tag for input')
+      console.log('ERROR: Missing tag for input')
   }
 
   return (
     <Fragment>
-      { inputElement }
+      {inputElement}
     </Fragment>
   )
 }

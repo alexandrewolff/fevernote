@@ -13,7 +13,7 @@ const App = () => {
     setToken(localStorageToken)
 
     if (error) {
-      console.error('ERROR: ', error)
+      console.log('ERROR: ', error)
     }
   }, [token, error])
 

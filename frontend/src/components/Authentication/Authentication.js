@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import axios from 'axios'
+import validator from 'validator'
 
 import Input from '../UI/Input/Input'
 import Button from '../UI/Button/Button'
@@ -11,24 +12,33 @@ const Authentication = ({ login, reportError }) => {
       config: {
         tag: 'input',
         type: 'email',
-        placeholder: 'Your email'
+        placeholder: 'Your email',
+        errorMessage: 'The format of the email you entered is not valid'
       },
+      isValid: false,
+      isTouched: false,
       value: ''
     },
     password: {
       config: {
         tag: 'input',
         type: 'password',
-        placeholder: 'Your password'
+        placeholder: 'Your password',
+        errorMessage: 'Your password should at least be 8 characters long, and have 1 lower character, 1 upper character, 1 special character and 1 number'
       },
+      isValid: false,
+      isTouched: false,
       value: ''
     },
     passwordConfirmation: {
       config: {
         tag: 'input',
         type: 'password',
-        placeholder: 'Confirm your password'
+        placeholder: 'Confirm your password',
+        errorMessage: 'Your password confirmation doesn\'t match'
       },
+      isValid: false,
+      isTouched: false,
       value: ''
     }
   })
@@ -46,6 +56,8 @@ const Authentication = ({ login, reportError }) => {
       }
 
       updatedField.value = ''
+      updatedField.isValid = false
+      updatedField.isTouched = false
       updatedFields[field] = updatedField
     }
 
@@ -62,6 +74,8 @@ const Authentication = ({ login, reportError }) => {
     }
 
     updatedField.value = event.target.value
+    updatedField.isValid = checkValidity(updatedField.value, field)
+    updatedField.isTouched = true
     updatedFields[field] = updatedField
 
     setFields(updatedFields)
@@ -85,6 +99,19 @@ const Authentication = ({ login, reportError }) => {
     }
   }
 
+  const checkValidity = (value, type) => {
+    switch (type) {
+      case ('email'):
+        return validator.isEmail(value)
+      case ('password'):
+        return validator.isStrongPassword(value)
+      case ('passwordConfirmation'):
+        return value === fields.password.value
+      default:
+        return true
+    }
+  }
+
   const fieldsElements = []
   for (const field in fields) {
     if (!showSignupMenu && field === 'passwordConfirmation') continue
@@ -94,6 +121,8 @@ const Authentication = ({ login, reportError }) => {
         key={field}
         config={fields[field].config}
         value={fields[field].value}
+        isValid={fields[field].isValid}
+        isTouched={fields[field].isTouched}
         changeHandler={(event) => changeHandler(event, field)}
       />
     )
