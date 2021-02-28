@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
 
+import './Authentication.scss'
 import Input from '../UI/Input/Input'
 import Button from '../UI/Button/Button'
 
@@ -13,10 +14,9 @@ const Authentication = ({ login, reportError }) => {
         tag: 'input',
         type: 'email',
         placeholder: 'Your email',
-        errorMessage: 'The format of the email you entered is not valid'
+        warningMessage: 'The format of the email you entered is not valid'
       },
       isValid: false,
-      isTouched: false,
       value: ''
     },
     password: {
@@ -24,10 +24,9 @@ const Authentication = ({ login, reportError }) => {
         tag: 'input',
         type: 'password',
         placeholder: 'Your password',
-        errorMessage: 'Your password should at least be 8 characters long, and have 1 lower character, 1 upper character, 1 special character and 1 number'
+        warningMessage: 'Your password needs 8 characters, 1 lower character, 1 upper character, 1 special character and 1 number'
       },
       isValid: false,
-      isTouched: false,
       value: ''
     },
     passwordConfirmation: {
@@ -35,10 +34,9 @@ const Authentication = ({ login, reportError }) => {
         tag: 'input',
         type: 'password',
         placeholder: 'Confirm your password',
-        errorMessage: 'Your password confirmation doesn\'t match'
+        warningMessage: 'Your password confirmation doesn\'t match'
       },
       isValid: false,
-      isTouched: false,
       value: ''
     }
   })
@@ -57,7 +55,6 @@ const Authentication = ({ login, reportError }) => {
 
       updatedField.value = ''
       updatedField.isValid = false
-      updatedField.isTouched = false
       updatedFields[field] = updatedField
     }
 
@@ -75,7 +72,6 @@ const Authentication = ({ login, reportError }) => {
 
     updatedField.value = event.target.value
     updatedField.isValid = checkValidity(updatedField.value, field)
-    updatedField.isTouched = true
     updatedFields[field] = updatedField
 
     setFields(updatedFields)
@@ -122,7 +118,6 @@ const Authentication = ({ login, reportError }) => {
         config={fields[field].config}
         value={fields[field].value}
         isValid={fields[field].isValid}
-        isTouched={fields[field].isTouched}
         changeHandler={(event) => changeHandler(event, field)}
       />
     )
@@ -147,15 +142,22 @@ const Authentication = ({ login, reportError }) => {
   }
 
   return (
-    <div>
-      <form onSubmit={(event) => submitHandler(event)}>
-        {fieldsElements}
-        <Button>{showSignupMenu ? 'SIGNUP' : 'SIGNIN'}</Button>
-      </form>
+    <div className="authentication">
+      <div className="box">
+        <div className="header">
+          <h1 className="header__title">Fever</h1>
+        </div>
 
-      {menuSwitch}
-      <p>or</p>
-      <p><a onClick={() => {}}>Try with a guest account!</a></p>
+        <form className="form" onSubmit={(event) => submitHandler(event)}>
+          {fieldsElements}
+          <Button>{showSignupMenu ? 'SIGNUP' : 'SIGNIN'}</Button>
+        </form>
+
+        {menuSwitch}
+
+        <p>or</p>
+        <p><a onClick={() => {}}>Try with a guest account!</a></p>
+      </div>
     </div>
   )
 }

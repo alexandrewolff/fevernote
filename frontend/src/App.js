@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
+import './App.scss'
 import Authentication from './components/Authentication/Authentication'
 import Client from './components/Client/Client'
 
@@ -50,7 +51,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="app">
       {routes}
     </div>
   )

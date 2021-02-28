@@ -1,0 +1,72 @@
+.authentication {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--gradient-faded);
+}
+
+.box {
+  background-color: white;
+  border: 1px solid var(--border-color-authentication-box);
+  border-radius: 4px;
+  box-shadow: 2px 2px 6px var(--default-shadow-color);
+  width: 500px;
+  height: 600px;
+}
+
+.header {
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  &__title {
+    font-size: 60px;
+    font-weight: 600;
+    font-family: serif;
+    font-weight: bold;
+    background: var(--gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    &::after {
+      content: "";
+      background-clip: text;
+      animation: writing 6s infinite ease-in-out;
+    }
+  }
+}
+
+.form {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+@keyframes writing {
+  0% {
+    content: "";
+  }
+  15% {
+    content: "n";
+  }
+  20% {
+    content: "no";
+  }
+  25% {
+    content: "not";
+  }
+  30% {
+    content: "note";
+  }
+  35% {
+    content: "note.";
+  }
+  100% {
+    content: "note.";
+  }
+}

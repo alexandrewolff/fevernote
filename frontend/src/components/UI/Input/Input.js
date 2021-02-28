@@ -1,23 +1,26 @@
 import React, { Fragment } from 'react'
 
-const Input = ({ config, value, isValid, isTouched, changeHandler }) => {
-  let errorMessage = null
-  if (!isValid && isTouched) {
-    errorMessage = <p>{config.errorMessage}</p>
+import './Input.scss'
+
+const Input = ({ config, value, isValid, changeHandler }) => {
+  let warningMessage = null
+  if (!isValid && value) {
+    warningMessage = <p className="input-box__warning">{config.warningMessage}</p>
   }
 
   let inputElement = null
   switch (config.tag) {
     case ('input'):
       inputElement = (
-        <div>
+        <div className="input-box">
           <input
+            className="input"
             type={config.type}
             placeholder={config.placeholder}
             value={value}
             onChange={changeHandler}
           />
-          {errorMessage}
+          {warningMessage}
         </div>
       )
       break
