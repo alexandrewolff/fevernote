@@ -41,11 +41,13 @@ ul {
 }
 
 button {
-    font-size: 13px;
+    font-size: 13px; 
     font-family: inherit;
 }
 
-
+input:invalid {
+  box-shadow: none;
+}
 
 button,
 input,

@@ -128,14 +128,14 @@ const Authentication = ({ login, reportError }) => {
     menuSwitch = (
       <Fragment>
         <p>Already have an account?</p>
-        <p><a onClick={switchMenuHandler}>Sign in</a></p>
+        <p><a className="menu-switch__link" onClick={switchMenuHandler}>Sign in</a></p>
       </Fragment>
     )
   } else {
     menuSwitch = (
       <Fragment>
         <p>Don't have an account?</p>
-        <p><a onClick={switchMenuHandler}>Create account</a></p>
+        <p><a className="menu-switch__link" onClick={switchMenuHandler}>Create account</a></p>
       </Fragment>
     )
   }
@@ -154,10 +154,12 @@ const Authentication = ({ login, reportError }) => {
           <Button>Ready?</Button>
         </form>
 
-        {menuSwitch}
+        <div className="menu-switch">
+          {menuSwitch}
 
-        <p>or</p>
-        <p><a onClick={() => {}}>Try with a guest account!</a></p>
+          <p>or</p>
+          <p><a className="menu-switch__link" onClick={() => {}}>Try with a guest account!</a></p>
+        </div>
       </div>
     </div>
   )
