@@ -4,19 +4,19 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import './App.scss'
 import Authentication from './components/Authentication/Authentication'
 import Client from './components/Client/Client'
+import Spinner from './components/UI/Spinner/Spinner'
+import Warning from './components/UI/Warning/Warning'
 
 const App = () => {
   const [token, setToken] = useState('')
-  const [error, setError] = useState(null)
+  const [warning, setWarning] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [showSpinner, setShowSpinner] = useState(false)
 
   useEffect(() => {
     const localStorageToken = JSON.parse(localStorage.getItem('token'))
     setToken(localStorageToken)
-
-    if (error) {
-      console.log('ERROR: ', error)
-    }
-  }, [token, error])
+  }, [token])
 
   const login = (token) => {
     setToken(token)
@@ -28,8 +28,8 @@ const App = () => {
     localStorage.removeItem('token')
   }
 
-  const reportError = (err) => {
-    setError(err)
+  const reportWarning = (msg) => {
+    setWarning(String(msg))
   }
 
   let routes = null
@@ -37,14 +37,14 @@ const App = () => {
   if (token) {
     routes = (
       <Switch>
-        <Route path="/client" render={() => <Client logout={logout} reportError={reportError} />} />
+        <Route path="/client" render={() => <Client logout={logout} reportWarning={reportWarning} />} />
         <Redirect to="/client" />
       </Switch>
     )
   } else {
     routes = (
       <Switch>
-        <Route path="/authentication" render={() => <Authentication login={login} reportError={reportError} />} />
+        <Route path="/authentication" render={() => <Authentication login={login} reportWarning={reportWarning} />} />
         <Redirect to="/authentication" />
       </Switch>
     )
@@ -53,6 +53,8 @@ const App = () => {
   return (
     <div className="app">
       {routes}
+      {showSpinner ? <Spinner /> : null}
+      {warning ? <Warning closeWarning={() => setWarning('')}>{warning}</Warning> : null}
     </div>
   )
 }

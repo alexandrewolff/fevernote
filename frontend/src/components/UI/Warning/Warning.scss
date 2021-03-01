@@ -1,0 +1,25 @@
+.warning-box {
+  background-color: var(--background-color-modal-boxes);
+  border-radius: 8px;
+  box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.2);
+  height: 300px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  
+  &__wrapper {
+    text-align: center;
+    display: flex;
+    height: 60%;
+    width: 80%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  &__text {
+    font-size: 1.4em;
+  }
+}

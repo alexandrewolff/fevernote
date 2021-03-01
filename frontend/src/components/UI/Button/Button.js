@@ -2,10 +2,15 @@ import React from 'react'
 
 import './Button.scss'
 
-const Button = ({ children, clickHandler }) => {
+const Button = ({ children, clickHandler, animated }) => {
+  const classes = ['button']
+  if (animated) {
+    classes.push('button--animated')
+  }
+
   return (
       <button
-        className="button button--animated"
+        className={classes.join(' ')}
         onClick={clickHandler}
       >
         {children}

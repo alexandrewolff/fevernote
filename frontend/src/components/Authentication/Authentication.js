@@ -6,7 +6,7 @@ import './Authentication.scss'
 import Input from '../UI/Input/Input'
 import Button from '../UI/Button/Button'
 
-const Authentication = ({ login, reportError }) => {
+const Authentication = ({ login, reportWarning }) => {
   const [showSignupMenu, setShowSignupMenu] = useState(false)
   const [fields, setFields] = useState({
     email: {
@@ -89,9 +89,14 @@ const Authentication = ({ login, reportError }) => {
 
     try {
       const response = await axios.post(endpoint, payload)
-      login(response.token)
+
+      if (showSignupMenu) {
+        // show validation message
+      } else {
+        login(response.token)
+      }
     } catch (err) {
-      reportError(err)
+      reportWarning(err)
     }
   }
 
@@ -151,7 +156,7 @@ const Authentication = ({ login, reportError }) => {
 
         <form className="form" onSubmit={(event) => submitHandler(event)}>
           {fieldsElements}
-          <Button>Ready?</Button>
+          <Button animated>Ready?</Button>
         </form>
 
         <div className="menu-switch">
