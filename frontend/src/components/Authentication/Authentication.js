@@ -124,19 +124,18 @@ const Authentication = ({ login, reportError }) => {
   }
 
   let menuSwitch = null
-
   if (showSignupMenu) {
     menuSwitch = (
       <Fragment>
-        <p>Don't have an account?</p>
-        <p><a onClick={switchMenuHandler}>Create account</a></p>
+        <p>Already have an account?</p>
+        <p><a onClick={switchMenuHandler}>Sign in</a></p>
       </Fragment>
     )
   } else {
     menuSwitch = (
       <Fragment>
-        <p>Already have an account?</p>
-        <p><a onClick={switchMenuHandler}>Sign in</a></p>
+        <p>Don't have an account?</p>
+        <p><a onClick={switchMenuHandler}>Create account</a></p>
       </Fragment>
     )
   }
@@ -145,12 +144,14 @@ const Authentication = ({ login, reportError }) => {
     <div className="authentication">
       <div className="box">
         <div className="header">
-          <h1 className="header__title">Fever</h1>
+          <h1 className="header__logo">Fever</h1>
         </div>
+
+        <h2 className="title">{showSignupMenu ? 'Sign up' : 'Sign in'}</h2>
 
         <form className="form" onSubmit={(event) => submitHandler(event)}>
           {fieldsElements}
-          <Button>{showSignupMenu ? 'SIGNUP' : 'SIGNIN'}</Button>
+          <Button>Ready?</Button>
         </form>
 
         {menuSwitch}

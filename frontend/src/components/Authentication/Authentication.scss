@@ -7,7 +7,7 @@
 }
 
 .box {
-  background-color: white;
+  background-color: var(--background-color-authentication-box);
   border: 1px solid var(--border-color-authentication-box);
   border-radius: 4px;
   box-shadow: 2px 2px 6px var(--default-shadow-color);
@@ -21,7 +21,7 @@
   justify-content: center;
   align-items: center;
   
-  &__title {
+  &__logo {
     font-size: 60px;
     font-weight: 600;
     font-family: serif;
@@ -37,6 +37,12 @@
       animation: writing 6s infinite ease-in-out;
     }
   }
+}
+
+.title {
+  text-align: center;
+  font-size: 130%;
+  margin-bottom: 25px;
 }
 
 .form {
