@@ -6,7 +6,7 @@ import './Authentication.scss'
 import Input from '../UI/Input/Input'
 import Button from '../UI/Button/Button'
 
-const Authentication = ({ login, reportWarning }) => {
+const Authentication = ({ login, setShowSpinner, setWarning }) => {
   const [showSignupMenu, setShowSignupMenu] = useState(false)
   const [fields, setFields] = useState({
     email: {
@@ -80,6 +80,8 @@ const Authentication = ({ login, reportWarning }) => {
   const submitHandler = async (event) => {
     event.preventDefault()
 
+    setShowSpinner(true)
+
     const endpoint = showSignupMenu ? 'user' : 'login'
 
     const payload = {
@@ -87,17 +89,22 @@ const Authentication = ({ login, reportWarning }) => {
       password: fields.password.value
     }
 
-    try {
-      const response = await axios.post(endpoint, payload)
+    setTimeout(async () => {
+      try {
+        const response = await axios.post(endpoint, payload)
 
-      if (showSignupMenu) {
-        // show validation message
-      } else {
-        login(response.token)
+        setShowSpinner(false)
+
+        if (showSignupMenu) {
+          setWarning('Your account has been created. You\'ve been sent a validation email')
+        } else {
+          login(response.token)
+        }
+      } catch (err) {
+        setShowSpinner(false)
+        setWarning(String(err))
       }
-    } catch (err) {
-      reportWarning(err)
-    }
+    }, 500)
   }
 
   const checkValidity = (value, type) => {

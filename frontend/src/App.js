@@ -28,23 +28,27 @@ const App = () => {
     localStorage.removeItem('token')
   }
 
-  const reportWarning = (msg) => {
-    setWarning(String(msg))
-  }
-
   let routes = null
 
   if (token) {
     routes = (
       <Switch>
-        <Route path="/client" render={() => <Client logout={logout} reportWarning={reportWarning} />} />
+        <Route path="/client" render={() => <Client
+          logout={logout}
+          setShowSpinner={setShowSpinner}
+          setWarning={setWarning}
+        />} />
         <Redirect to="/client" />
       </Switch>
     )
   } else {
     routes = (
       <Switch>
-        <Route path="/authentication" render={() => <Authentication login={login} reportWarning={reportWarning} />} />
+        <Route path="/authentication" render={() => <Authentication
+          login={login}
+          setShowSpinner={setShowSpinner}
+          setWarning={setWarning}
+        />} />
         <Redirect to="/authentication" />
       </Switch>
     )
