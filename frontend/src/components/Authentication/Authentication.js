@@ -86,7 +86,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     }
 
     if (!payload.email || !payload.password) {
-      return setWarning('Please fill in all fields')
+      return setWarning({ show: true, content: 'Please fill in all fields' })
     }
 
     setShowSpinner(true)
@@ -100,15 +100,15 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
         setShowSpinner(false)
 
         if (showSignupMenu) {
-          setWarning('Your account has been created. You\'ve been sent a validation email')
+          setWarning({ show: true, content: 'Your account has been created. You\'ve been sent a validation email' })
         } else {
           login(response.token)
         }
       } catch (err) {
         setShowSpinner(false)
-        setWarning(String(err))
+        setWarning({ show: true, content: String(err) })
       }
-    }, 500)
+    }, 1000)
   }
 
   const checkValidity = (value, type) => {

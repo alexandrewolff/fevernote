@@ -11,14 +11,14 @@
   
   &__wrapper {
     text-align: center;
-    display: flex;
     height: 60%;
     width: 80%;
+    display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
   }
-
+  
   &__text {
     font-size: 1.4em;
   }
