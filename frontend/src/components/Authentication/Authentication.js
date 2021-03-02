@@ -80,14 +80,18 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
   const submitHandler = async (event) => {
     event.preventDefault()
 
-    setShowSpinner(true)
-
-    const endpoint = showSignupMenu ? 'user' : 'login'
-
     const payload = {
       email: fields.email.value,
       password: fields.password.value
     }
+
+    if (!payload.email || !payload.password) {
+      return setWarning('Please fill in all fields')
+    }
+
+    setShowSpinner(true)
+
+    const endpoint = showSignupMenu ? 'user' : 'login'
 
     setTimeout(async () => {
       try {
