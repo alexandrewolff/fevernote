@@ -1,5 +1,6 @@
 import React from 'react'
 
+import '../overlay.scss'
 import './Spinner.scss'
 import Backdrop from '../Backdrop/Backdrop'
 

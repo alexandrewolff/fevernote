@@ -4,8 +4,8 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import './App.scss'
 import Authentication from './components/Authentication/Authentication'
 import Client from './components/Client/Client'
-import Spinner from './components/UI/Spinner/Spinner'
-import Warning from './components/UI/Warning/Warning'
+import Spinner from './components/UI/overlay/Spinner/Spinner'
+import Warning from './components/UI/overlay/Warning/Warning'
 
 const App = () => {
   const [token, setToken] = useState('')

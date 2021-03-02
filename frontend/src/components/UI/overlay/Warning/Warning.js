@@ -1,8 +1,9 @@
 import React from 'react'
 
+import '../overlay.scss'
 import './Warning.scss'
 import Backdrop from '../Backdrop/Backdrop'
-import Button from '../Button/Button'
+import Button from '../../Button/Button'
 
 const Warning = ({ children, closeWarning }) => {
   return (
