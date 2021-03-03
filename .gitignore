@@ -3,7 +3,6 @@
 # misc
 .DS_Store
 
-
 ## FRONTEND ##
 
 # dependencies
@@ -33,6 +32,9 @@ frontend/yarn-error.log*
 
 # dependencies
 backend/node_modules
+
+# config
+backend/config
 
 # misc
 backend/.DS_Store

@@ -93,22 +93,20 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
 
     const endpoint = showSignupMenu ? 'user' : 'login'
 
-    setTimeout(async () => {
-      try {
-        const response = await axios.post(endpoint, payload)
+    try {
+      const response = await axios.post(endpoint, payload)
 
-        setShowSpinner(false)
+      setShowSpinner(false)
 
-        if (showSignupMenu) {
-          setWarning({ show: true, content: 'Your account has been created. You\'ve been sent a validation email' })
-        } else {
-          login(response.token)
-        }
-      } catch (err) {
-        setShowSpinner(false)
-        setWarning({ show: true, content: String(err) })
+      if (showSignupMenu) {
+        setWarning({ show: true, content: 'Your account has been created. You\'ve been sent a validation email' })
+      } else {
+        login(response.token)
       }
-    }, 1000)
+    } catch (err) {
+      setShowSpinner(false)
+      setWarning({ show: true, content: String(err) })
+    }
   }
 
   const checkValidity = (value, type) => {
