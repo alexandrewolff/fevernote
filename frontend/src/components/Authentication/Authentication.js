@@ -158,7 +158,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
 
   return (
     <div className="authentication">
-      <div className="box">
+      <div className="authentication-box">
         <div className="header">
           <h1 className="header__logo">Fever</h1>
         </div>
