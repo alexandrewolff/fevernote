@@ -99,7 +99,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
       setShowSpinner(false)
 
       if (showSignupMenu) {
-        setWarning({ show: true, content: 'Your account has been created. You\'ve been sent a validation email' })
+        setWarning({ show: true, content: 'Your account has been created. Please validate it with the mail you\'ve been sent!' })
       } else {
         login(response.token)
       }
