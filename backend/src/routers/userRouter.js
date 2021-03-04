@@ -8,9 +8,10 @@ router.post('/api/user', async (req, res) => {
 
   try {
     await user.save()
+    // user.launchAccountValidation(process.env.APP_URL)
     res.status(201).send(user.toPublicObject())
-  } catch (err) {
-    res.status(400).send(err)
+  } catch (error) {
+    res.status(400).send(error)
   }
 })
 

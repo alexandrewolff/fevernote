@@ -23,7 +23,7 @@ test('Should signup user', async () => {
           password
       })
       .expect(201)
-  
+  // password and token should be rmoved
   const user = await User.findOne({ email })
   expect(user).not.toBeNull()
 })
