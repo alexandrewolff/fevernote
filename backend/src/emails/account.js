@@ -7,7 +7,7 @@ exports.sendSignupEmail = async ({ email, host, token }) => {
     await sgMail.send({
       to: email,
       from: 'contact@alexandrewolff.com',
-      subject: 'Thanks for trying my app !',
+      subject: 'Thanks for trying my app Fevernote !',
       text: `
         Welcome to Fevernote.\n
         Please verify your account by clicking the following link:\nhttp://${host}/verify/${token}\n
@@ -15,7 +15,7 @@ exports.sendSignupEmail = async ({ email, host, token }) => {
       `
     })
   } catch (error) {
-    console.error(error);
+    console.error(error)
 
     if (error.response) {
       console.error(error.response.body)

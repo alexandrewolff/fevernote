@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
   tokens: [{
     type: String
   }]
@@ -49,14 +53,20 @@ userSchema.methods.toPublicObject = function () {
     updatedAt,
     __v
   }
-  
+
   return updatedUser
 }
 
-userSchema.methods.launchAccountValidation = function(appUrl) {
-  const { email, id } = this
-  const validationToken = generateToken(id, ACCOUNT_VALIDATION_EXPIRATION_TIME)
+userSchema.methods.launchAccountValidation = function (appUrl) {
+  const { email, _id } = this
+  const validationToken = generateToken(_id, ACCOUNT_VALIDATION_EXPIRATION_TIME)
+  console.log('validationToken: ', validationToken)
   sendSignupEmail({ email, host: appUrl, token: validationToken })
+}
+
+userSchema.methods.validateAccount = async function () {
+  const user = this
+  await User.updateOne({ _id: user._id }, { isVerified: true })
 }
 
 userSchema.pre('save', async function (next) {

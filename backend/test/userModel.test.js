@@ -3,7 +3,7 @@ const User = require('../src/models/userModel')
 
 let email, password
 
-beforeAll(() => {
+beforeAll(async () => {
   mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -11,11 +11,13 @@ beforeAll(() => {
 
   mongoose.set('useCreateIndex', true)
 
+  await User.deleteMany()
+
   email = 'joe@gmail.com'
   password = 'asSDd8f7fasd@#$sdaf'
 })
 
-beforeEach(async () => await User.deleteMany())
+afterEach(async () => await User.deleteMany())
 
 afterAll(() => {
   mongoose.connection.close()
@@ -41,10 +43,10 @@ test('Should NOT create user if missing required field', async () => {
   })
 
   try {
-      await user.save()
-      return false
-  } catch(err) {
-      expect(err.message).toBe('user validation failed: email: Path `email` is required.')
+    await user.save()
+    return false
+  } catch (err) {
+    expect(err.message).toBe('user validation failed: email: Path `email` is required.')
   }
 })
 
@@ -55,9 +57,9 @@ test('Should NOT create user if password doesn\'t match rules', async () => {
   })
 
   try {
-      await user.save()
-      return false
-  } catch(err) {
-      expect(err.message).toBe('user validation failed: password: Your password needs 8 characters, 1 lower character, 1 upper character, 1 special character and 1 number')
+    await user.save()
+    return false
+  } catch (error) {
+    expect(error.message).toBe('user validation failed: password: Your password needs 8 characters, 1 lower character, 1 upper character, 1 special character and 1 number')
   }
 })
