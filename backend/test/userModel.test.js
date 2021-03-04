@@ -1,9 +1,7 @@
-// const fs = require('fs')
-// const path = require('path')
 const mongoose = require('mongoose')
 const User = require('../src/models/userModel')
 
-let email, password, user
+let email, password
 
 beforeAll(() => {
   mongoose.connect(process.env.MONGODB_URL, {
@@ -12,24 +10,23 @@ beforeAll(() => {
   })
 
   mongoose.set('useCreateIndex', true)
-})
-
-beforeEach(async () => {
-  await User.deleteMany()
 
   email = 'joe@gmail.com'
   password = 'asSDd8f7fasd@#$sdaf'
-  user = new User({
-    email,
-    password
-  })
 })
+
+beforeEach(async () => await User.deleteMany())
 
 afterAll(() => {
   mongoose.connection.close()
 })
 
 test('Should create user', async () => {
+  const user = new User({
+    email,
+    password
+  })
+
   await user.save()
   const userFromDb = await User.findOne({ email })
 
@@ -38,7 +35,10 @@ test('Should create user', async () => {
 })
 
 test('Should NOT create user if missing required field', async () => {
-  delete user.email
+  const user = new User({
+    email: '',
+    password
+  })
 
   try {
       await user.save()
@@ -49,7 +49,10 @@ test('Should NOT create user if missing required field', async () => {
 })
 
 test('Should NOT create user if password doesn\'t match rules', async () => {
-  user.password = 'NoSp3cialChar'
+  const user = new User({
+    email,
+    password: 'NoSp3cialChar'
+  })
 
   try {
       await user.save()
