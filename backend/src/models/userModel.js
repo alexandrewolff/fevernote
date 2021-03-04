@@ -60,7 +60,6 @@ userSchema.methods.toPublicObject = function () {
 userSchema.methods.launchAccountValidation = function (appUrl) {
   const { email, _id } = this
   const validationToken = generateToken(_id, ACCOUNT_VALIDATION_EXPIRATION_TIME)
-  console.log('validationToken: ', validationToken)
   sendSignupEmail({ email, host: appUrl, token: validationToken })
 }
 

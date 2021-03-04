@@ -32,7 +32,7 @@ router.get('/api/verify/:token', async (req, res) => {
   }
 
   if (user.isVerified) {
-    return res.status(400).send(new Error('Email already verified'))
+    return res.status(400).send('Email already verified')
   }
 
   try {
@@ -41,6 +41,22 @@ router.get('/api/verify/:token', async (req, res) => {
   } catch (error) {
     res.status(400).send(error)
   }
+})
+
+router.post('/api/resend', async (req, res) => {
+  const user = await User.findOne({ email: req.body.email })
+
+  if (!user) {
+    return res.status(404).send()
+  }
+
+  if (user.isVerified) {
+    return res.status(400).send('Email already verified')
+  }
+
+  user.launchAccountValidation(process.env.APP_URL)
+
+  res.status(200).send()
 })
 
 module.exports = router
