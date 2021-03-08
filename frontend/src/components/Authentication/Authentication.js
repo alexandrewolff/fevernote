@@ -41,9 +41,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     }
   })
 
-  const switchMenuHandler = () => {
-    setShowSignupMenu(prevIsSignup => !prevIsSignup)
-
+  const emptyFields = () => {
     const updatedFields = {
       ...fields
     }
@@ -61,6 +59,11 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     setFields(updatedFields)
   }
 
+  const switchMenuHandler = () => {
+    emptyFields()
+    setShowSignupMenu(prevIsSignup => !prevIsSignup)
+  }
+
   const changeHandler = (event, field) => {
     const updatedFields = {
       ...fields
@@ -74,6 +77,16 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     updatedField.isValid = checkValidity(updatedField.value, field)
     updatedFields[field] = updatedField
 
+    if (field === 'password') {
+      const updatedField = {
+        ...updatedFields.passwordConfirmation
+      }
+
+      updatedField.isValid = updatedField.value === event.target.value
+
+      updatedFields.passwordConfirmation = updatedField
+    }
+
     setFields(updatedFields)
   }
 
@@ -81,8 +94,8 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     event.preventDefault()
 
     const payload = {
-      email: fields.email.value,
-      password: fields.password.value
+      email: fields.email.value.trim(),
+      password: fields.password.value.trim()
     }
 
     if (!payload.email || !payload.password) {
@@ -94,18 +107,19 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     const endpoint = showSignupMenu ? 'user' : 'login'
 
     try {
-      const response = await axios.post(endpoint, payload)
+      const response = await axios.post(endpoint, payload, { timeout: 8000 })
 
       setShowSpinner(false)
 
       if (showSignupMenu) {
+        emptyFields()
         setWarning({ show: true, content: 'Your account has been created. Please validate it with the mail you\'ve been sent! (It may take a few minutes to arrive)' })
       } else {
         login(response.token)
       }
-    } catch (err) {
+    } catch (error) {
       setShowSpinner(false)
-      setWarning({ show: true, content: String(err) })
+      setWarning({ show: true, content: error.message })
     }
   }
 
