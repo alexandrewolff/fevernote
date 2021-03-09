@@ -68,6 +68,32 @@ userSchema.methods.validateAccount = async function () {
   await User.updateOne({ _id: user._id }, { isVerified: true })
 }
 
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    throw new Error('Unable to login')
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password)
+
+  if (!isMatch) {
+    throw new Error('Unable to login')
+  }
+
+  return user
+}
+
+userSchema.methods.populateAuthToken = async function () {
+  const { _id } = this
+  const user = this
+
+  const token = generateToken(_id, LOGIN_EXPIRATION_TIME)
+
+  user.tokens.push(token)
+  user.save()
+}
+
 userSchema.pre('save', async function (next) {
   const user = this
   if (user.isModified('password')) {

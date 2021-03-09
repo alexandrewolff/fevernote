@@ -12,7 +12,7 @@ router.post('/api/user', async (req, res) => {
     user.launchAccountValidation(process.env.APP_URL)
     res.status(201).send(user.toPublicObject())
   } catch (error) {
-    if (error.keyPattern.email === 1) {
+    if (error.keyPattern && error.keyPattern.email === 1) {
       return res.status(400).send('Email already used')
     }
 
@@ -61,6 +61,27 @@ router.post('/api/resend', async (req, res) => {
   user.launchAccountValidation(process.env.APP_URL)
 
   res.status(200).send()
+})
+
+router.post('/api/user/login', async (req, res) => {
+  try {
+    const user = await User.findByCredentials(req.body.email, req.body.password)
+
+    if (!user.isVerified) {
+      return res.status(400).send('User is not verified')
+    }
+
+    await user.populateAuthToken()
+
+    const lastToken = user.tokens.slice(-1)[0]
+
+    res.send({
+      user: user.toPublicObject(),
+      token: lastToken
+    })
+  } catch {
+    res.status(400).send()
+  }
 })
 
 module.exports = router
