@@ -12,6 +12,10 @@ router.post('/api/user', async (req, res) => {
     user.launchAccountValidation(process.env.APP_URL)
     res.status(201).send(user.toPublicObject())
   } catch (error) {
+    if (error.keyPattern.email === 1) {
+      return res.status(400).send('Email already used')
+    }
+
     res.status(400).send(error)
   }
 })
@@ -37,7 +41,7 @@ router.get('/api/verify/:token', async (req, res) => {
 
   try {
     await user.validateAccount()
-    res.status(200).send()
+    res.status(200).send(user.toPublicObject())
   } catch (error) {
     res.status(400).send(error)
   }

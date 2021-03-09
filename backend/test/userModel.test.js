@@ -44,7 +44,7 @@ test('Should NOT create user if missing required field', async () => {
 
   try {
     await user.save()
-    return false
+    throw new Error('It should not be able to save user if no email')
   } catch (err) {
     expect(err.message).toBe('user validation failed: email: Path `email` is required.')
   }
@@ -58,8 +58,29 @@ test('Should NOT create user if password doesn\'t match rules', async () => {
 
   try {
     await user.save()
-    return false
+    throw new Error('It should not be able to save user if password doesn\'t match rules')
   } catch (error) {
     expect(error.message).toBe('user validation failed: password: Your password needs 8 characters, 1 lower character, 1 upper character, 1 special character and 1 number')
+  }
+})
+
+test('Should NOT create user if email already used', async () => {
+  const user1 = new User({
+    email,
+    password
+  })
+
+  const user2 = new User({
+    email,
+    password
+  })
+
+  await user1.save()
+
+  try {
+    await user2.save()
+    throw new Error('It should not be able to save another user with same email')
+  } catch (error) {
+    expect(error.keyPattern).toMatchObject({ email: 1 })
   }
 })

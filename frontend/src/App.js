@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
+import axios from 'axios'
 
 import './App.scss'
 import Authentication from './components/Authentication/Authentication'
@@ -27,6 +28,27 @@ const App = () => {
   const logout = () => {
     setToken('')
     localStorage.removeItem('token')
+  }
+
+  const verifyAccount = async (props) => {
+    const token = props.match.params.token
+
+    setShowSpinner(true)
+
+    try {
+      const response = await axios.get(`/verify/${token}`, { timeout: 8000 })
+
+      setShowSpinner(false)
+      setWarning({ show: true, content: `Your ${response.data.email} account has been verified. Enjoy!` })
+    } catch (error) {
+      setShowSpinner(false)
+
+      if (error.response.data) {
+        setWarning({ show: true, content: error.response.data })
+      } else {
+        setWarning({ show: true, content: error.message })
+      }
+    }
   }
 
   let routes = null
@@ -57,6 +79,8 @@ const App = () => {
 
   return (
     <div className="app">
+      <Route path="/verify/:token" render={(props) => { verifyAccount(props) }} />
+
       {routes}
 
       <CSSTransition

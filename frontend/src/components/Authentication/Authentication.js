@@ -119,7 +119,12 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
       }
     } catch (error) {
       setShowSpinner(false)
-      setWarning({ show: true, content: error.message })
+
+      if (error.response.data) {
+        setWarning({ show: true, content: error.response.data })
+      } else {
+        setWarning({ show: true, content: error.message })
+      }
     }
   }
 
