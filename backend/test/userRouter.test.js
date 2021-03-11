@@ -2,6 +2,7 @@ const request = require('supertest')
 const jwt = require('jsonwebtoken')
 const app = require('../src/app')
 const User = require('../src/models/userModel')
+const { createUser } = require('./fixtures/db')
 
 let email, password
 
@@ -67,31 +68,21 @@ test('Should not signup user if no special character in password', async () => {
 })
 
 test('Should verify user email', async () => {
-  const user = new User({
-    email,
-    password
-  })
+  const user = await createUser(email, password)
 
-  const response = await user.save()
-
-  const token = jwt.sign({ id: response._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
 
   await request(app)
     .get(`/api/verify/${token}`)
     .send()
     .expect(200)
 
-  const userFromDb = await User.findById(response._id)
+  const userFromDb = await User.findById(user._id)
   expect(userFromDb.isVerified).toBe(true)
 })
 
 test('Should not verify if already verified', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  const user = await createUser(email, password)
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
 
@@ -108,12 +99,7 @@ test('Should not verify if already verified', async () => {
 })
 
 test('Should not verify if invalid token', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  await createUser(email, password)
 
   await request(app)
     .get('/api/verify/invalidtoken')
@@ -122,12 +108,7 @@ test('Should not verify if invalid token', async () => {
 })
 
 test('Should resend email verification', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  await createUser(email, password)
 
   request(app)
     .post('/api/resend')
@@ -138,12 +119,7 @@ test('Should resend email verification', async () => {
 })
 
 test('Should not resend email verication if invalid mail', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  await createUser(email, password)
 
   await request(app)
     .post('/api/resend')
@@ -154,12 +130,7 @@ test('Should not resend email verication if invalid mail', async () => {
 })
 
 test('Should not resend email verication if already verified', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  const user = await createUser(email, password)
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
 
@@ -178,12 +149,7 @@ test('Should not resend email verication if already verified', async () => {
 })
 
 test('Should login', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  const user = await createUser(email, password)
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
 
@@ -204,12 +170,7 @@ test('Should login', async () => {
 })
 
 test('Should not login if not verified', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  await createUser(email, password)
 
   const response = await request(app)
     .post('/api/user/login')
@@ -226,12 +187,7 @@ test('Should not login if not verified', async () => {
 })
 
 test('Should not login if invalid email', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  await createUser(email, password)
 
   const response = await request(app)
     .post('/api/user/login')
@@ -248,12 +204,7 @@ test('Should not login if invalid email', async () => {
 })
 
 test('Should not login if invalid password', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  await createUser(email, password)
 
   const response = await request(app)
     .post('/api/user/login')
@@ -270,12 +221,7 @@ test('Should not login if invalid password', async () => {
 })
 
 test('Should logout', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  const user = await createUser(email, password)
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
 
@@ -301,12 +247,7 @@ test('Should logout', async () => {
 })
 
 test('Should not logout if not logged in', async () => {
-  const user = new User({
-    email,
-    password
-  })
-
-  await user.save()
+  const user = await createUser(email, password)
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
 
