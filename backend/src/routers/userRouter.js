@@ -3,6 +3,9 @@ const User = require('../models/userModel')
 const auth = require('../middleware/auth')
 const { decodeToken } = require('../helpers/token')
 
+const ACCOUNT_VALIDATION_EXPIRATION_TIME = '12h'
+const LOGIN_EXPIRATION_TIME = '1h'
+
 const router = new Router()
 
 router.post('/api/user', async (req, res) => {
@@ -10,7 +13,7 @@ router.post('/api/user', async (req, res) => {
 
   try {
     await user.save()
-    user.launchAccountValidation(process.env.APP_URL)
+    user.launchAccountValidation(process.env.APP_URL, ACCOUNT_VALIDATION_EXPIRATION_TIME)
     res.status(201).send(user.toPublicObject())
   } catch (error) {
     if (error.keyPattern && error.keyPattern.email === 1) {
@@ -72,20 +75,21 @@ router.post('/api/login', async (req, res) => {
       return res.status(400).send('User is not verified')
     }
 
-    await user.populateAuthToken()
+    await user.populateAuthToken(LOGIN_EXPIRATION_TIME)
 
     const lastToken = user.tokens.slice(-1)[0]
 
     res.send({
       user: user.toPublicObject(),
-      token: lastToken
+      token: lastToken,
+      expiration: LOGIN_EXPIRATION_TIME
     })
   } catch (error) {
     res.status(400).send(error.message)
   }
 })
 
-router.post('/api/user/logout', auth, async (req, res) => {
+router.post('/api/logout', auth, async (req, res) => {
   req.user.tokens = req.user.tokens.filter(token => token !== req.token)
 
   try {

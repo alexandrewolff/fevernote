@@ -1,12 +1,8 @@
 const mongoose = require('mongoose')
 const { isEmail, isStrongPassword } = require('validator')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const { generateToken } = require('../helpers/token')
 const { sendSignupEmail } = require('../emails/account')
-
-const ACCOUNT_VALIDATION_EXPIRATION_TIME = '12h'
-const LOGIN_EXPIRATION_TIME = '1h'
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -57,9 +53,9 @@ userSchema.methods.toPublicObject = function () {
   return updatedUser
 }
 
-userSchema.methods.launchAccountValidation = function (appUrl) {
+userSchema.methods.launchAccountValidation = function (appUrl, expirationTime) {
   const { email, _id } = this
-  const validationToken = generateToken(_id, ACCOUNT_VALIDATION_EXPIRATION_TIME)
+  const validationToken = generateToken(_id, expirationTime)
   sendSignupEmail({ email, host: appUrl, token: validationToken })
 }
 
@@ -84,11 +80,11 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user
 }
 
-userSchema.methods.populateAuthToken = async function () {
+userSchema.methods.populateAuthToken = async function (expirationTime) {
   const { _id } = this
   const user = this
 
-  const token = generateToken(_id, LOGIN_EXPIRATION_TIME)
+  const token = generateToken(_id, expirationTime)
 
   user.tokens.push(token)
   user.save()

@@ -158,7 +158,7 @@ test('Should login', async () => {
     .send()
 
   await request(app)
-    .post('/api/user/login')
+    .post('/api/login')
     .send({
       email,
       password
@@ -169,11 +169,40 @@ test('Should login', async () => {
   expect(userFromDb.tokens).toHaveLength(1)
 })
 
+test('Should login multiple times', async () => {
+  const user = await createUser(email, password)
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
+
+  await request(app)
+    .get(`/api/verify/${token}`)
+    .send()
+
+  await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  const userFromDb = await User.findOne({ email })
+  expect(userFromDb.tokens).toHaveLength(2)
+})
+
 test('Should not login if not verified', async () => {
   await createUser(email, password)
 
   const response = await request(app)
-    .post('/api/user/login')
+    .post('/api/login')
     .send({
       email,
       password
@@ -190,7 +219,7 @@ test('Should not login if invalid email', async () => {
   await createUser(email, password)
 
   const response = await request(app)
-    .post('/api/user/login')
+    .post('/api/login')
     .send({
       email: 'invalid@gmail.com',
       password
@@ -207,7 +236,7 @@ test('Should not login if invalid password', async () => {
   await createUser(email, password)
 
   const response = await request(app)
-    .post('/api/user/login')
+    .post('/api/login')
     .send({
       email,
       password: 'invalidpassword'
@@ -230,14 +259,14 @@ test('Should logout', async () => {
     .send()
 
   const { body } = await request(app)
-    .post('/api/user/login')
+    .post('/api/login')
     .send({
       email,
       password
     })
 
   await request(app)
-    .post('/api/user/logout')
+    .post('/api/logout')
     .set('Authorization', `Bearer ${body.token}`)
     .send()
     .expect(200)
@@ -256,7 +285,7 @@ test('Should not logout if not logged in', async () => {
     .send()
 
   await request(app)
-    .post('/api/user/logout')
+    .post('/api/logout')
     .send()
     .expect(401)
 })

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import axios from 'axios'
+import { toMilliseconds } from 'yaspar'
 
 import './App.scss'
 import Authentication from './components/Authentication/Authentication'
@@ -16,17 +17,28 @@ const App = () => {
   const [showSpinner, setShowSpinner] = useState(false)
 
   useEffect(() => {
-    const localStorageToken = JSON.parse(localStorage.getItem('token'))
-    setToken(localStorageToken)
+    const localStorageExpirationTime = parseInt(localStorage.getItem('expirationTime'))
+
+    if (localStorageExpirationTime && localStorageExpirationTime > Date.now()) {
+      const localStorageToken = localStorage.getItem('token')
+      setToken(localStorageToken)
+
+      setSessionTimeout(localStorageExpirationTime - Date.now())
+    }
   }, [])
 
-  const login = (token) => {
+  const login = (token, expiration) => {
+    const expirationTime = Date.now() + toMilliseconds(expiration)
     localStorage.setItem('token', token)
+    localStorage.setItem('expirationTime', expirationTime)
     setToken(token)
+
+    setSessionTimeout(toMilliseconds(expiration))
   }
 
   const logout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('expirationTime')
     setToken('')
   }
 
@@ -49,6 +61,13 @@ const App = () => {
         setWarning({ show: true, content: error.message })
       }
     }
+  }
+
+  const setSessionTimeout = (delay) => {
+    setTimeout(() => {
+      logout()
+      setWarning({ show: true, content: 'Your session has expired, please sign in again.' })
+    }, delay)
   }
 
   let routes = null
