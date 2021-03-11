@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import axios from 'axios'
@@ -18,16 +18,16 @@ const App = () => {
   useEffect(() => {
     const localStorageToken = JSON.parse(localStorage.getItem('token'))
     setToken(localStorageToken)
-  }, [token])
+  }, [])
 
   const login = (token) => {
-    setToken(token)
     localStorage.setItem('token', token)
+    setToken(token)
   }
 
   const logout = () => {
-    setToken('')
     localStorage.removeItem('token')
+    setToken('')
   }
 
   const verifyAccount = async (props) => {

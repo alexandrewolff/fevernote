@@ -64,7 +64,7 @@ router.post('/api/resend', async (req, res) => {
   res.status(200).send()
 })
 
-router.post('/api/user/login', async (req, res) => {
+router.post('/api/login', async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password)
 

@@ -115,12 +115,12 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
         emptyFields()
         setWarning({ show: true, content: 'Your account has been created. Please validate it with the mail you\'ve been sent! (It may take a few minutes to arrive)' })
       } else {
-        login(response.token)
+        login(response.data.token)
       }
     } catch (error) {
       setShowSpinner(false)
 
-      if (error.response.data) {
+      if (error.response) {
         setWarning({ show: true, content: error.response.data })
       } else {
         setWarning({ show: true, content: error.message })
@@ -150,7 +150,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
         key={field}
         config={fields[field].config}
         value={fields[field].value}
-        isValid={fields[field].isValid}
+        isValid={!showSignupMenu || fields[field].isValid}
         changeHandler={(event) => changeHandler(event, field)}
       />
     )
