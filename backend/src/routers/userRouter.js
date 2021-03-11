@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const User = require('../models/userModel')
+const auth = require('../middleware/auth')
 const { decodeToken } = require('../helpers/token')
 
 const router = new Router()
@@ -79,8 +80,19 @@ router.post('/api/user/login', async (req, res) => {
       user: user.toPublicObject(),
       token: lastToken
     })
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
+})
+
+router.post('/api/user/logout', auth, async (req, res) => {
+  req.user.tokens = req.user.tokens.filter(token => token !== req.token)
+
+  try {
+    await req.user.save()
+    res.status(200).send()
   } catch {
-    res.status(400).send()
+    res.status(500).send()
   }
 })
 

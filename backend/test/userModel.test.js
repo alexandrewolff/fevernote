@@ -36,7 +36,7 @@ test('Should create user', async () => {
   expect(userFromDb.password).not.toBe(password)
 })
 
-test('Should NOT create user if missing required field', async () => {
+test('Should not create user if missing required field', async () => {
   const user = new User({
     email: '',
     password
@@ -50,7 +50,7 @@ test('Should NOT create user if missing required field', async () => {
   }
 })
 
-test('Should NOT create user if password doesn\'t match rules', async () => {
+test('Should not create user if password doesn\'t match rules', async () => {
   const user = new User({
     email,
     password: 'NoSp3cialChar'
@@ -64,7 +64,7 @@ test('Should NOT create user if password doesn\'t match rules', async () => {
   }
 })
 
-test('Should NOT create user if email already used', async () => {
+test('Should not create user if email already used', async () => {
   const user1 = new User({
     email,
     password

@@ -32,7 +32,7 @@ test('Should signup user', async () => {
   expect(user).not.toBeNull()
 })
 
-test('Should NOT signup user if no email', async () => {
+test('Should not signup user if no email', async () => {
   await request(app)
     .post('/api/user')
     .send({
@@ -42,12 +42,12 @@ test('Should NOT signup user if no email', async () => {
     .expect(400)
 })
 
-test('Should NOT signup user if invalid email', async () => {
+test('Should not signup user if invalid email', async () => {
   const newEmail = 'joe.com'
   await request(app)
     .post('/api/user')
     .send({
-      email: newEmail,
+      email: 'joe.com',
       password
     })
     .expect(400)
@@ -56,7 +56,7 @@ test('Should NOT signup user if invalid email', async () => {
   expect(user).toBeNull()
 })
 
-test('Should NOT signup user if no special character in password', async () => {
+test('Should not signup user if no special character in password', async () => {
   await request(app)
     .post('/api/user')
     .send({
@@ -85,7 +85,7 @@ test('Should verify user email', async () => {
   expect(userFromDb.isVerified).toBe(true)
 })
 
-test('Should NOT verify if already verified', async () => {
+test('Should not verify if already verified', async () => {
   const user = new User({
     email,
     password
@@ -107,7 +107,7 @@ test('Should NOT verify if already verified', async () => {
   expect(response.error.text).toBe('Email already verified')
 })
 
-test('Should NOT verify if invalid token', async () => {
+test('Should not verify if invalid token', async () => {
   const user = new User({
     email,
     password
@@ -137,7 +137,7 @@ test('Should resend email verification', async () => {
     .expect(200)
 })
 
-test('Should NOT resend email verication if invalid mail', async () => {
+test('Should not resend email verication if invalid mail', async () => {
   const user = new User({
     email,
     password
@@ -153,7 +153,7 @@ test('Should NOT resend email verication if invalid mail', async () => {
     .expect(404)
 })
 
-test('Should NOT resend email verication if already verified', async () => {
+test('Should not resend email verication if already verified', async () => {
   const user = new User({
     email,
     password
@@ -203,7 +203,7 @@ test('Should login', async () => {
   expect(userFromDb.tokens).toHaveLength(1)
 })
 
-test('Should NOT login if not verified', async () => {
+test('Should not login if not verified', async () => {
   const user = new User({
     email,
     password
@@ -223,4 +223,99 @@ test('Should NOT login if not verified', async () => {
 
   const userFromDb = await User.findOne({ email })
   expect(userFromDb.tokens).toHaveLength(0)
+})
+
+test('Should not login if invalid email', async () => {
+  const user = new User({
+    email,
+    password
+  })
+
+  await user.save()
+
+  const response = await request(app)
+    .post('/api/user/login')
+    .send({
+      email: 'invalid@gmail.com',
+      password
+    })
+    .expect(400)
+
+  expect(response.error.text).toBe('Unable to login')
+
+  const userFromDb = await User.findOne({ email })
+  expect(userFromDb.tokens).toHaveLength(0)
+})
+
+test('Should not login if invalid password', async () => {
+  const user = new User({
+    email,
+    password
+  })
+
+  await user.save()
+
+  const response = await request(app)
+    .post('/api/user/login')
+    .send({
+      email,
+      password: 'invalidpassword'
+    })
+    .expect(400)
+
+  expect(response.error.text).toBe('Unable to login')
+
+  const userFromDb = await User.findOne({ email })
+  expect(userFromDb.tokens).toHaveLength(0)
+})
+
+test('Should logout', async () => {
+  const user = new User({
+    email,
+    password
+  })
+
+  await user.save()
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
+
+  await request(app)
+    .get(`/api/verify/${token}`)
+    .send()
+
+  const { body } = await request(app)
+    .post('/api/user/login')
+    .send({
+      email,
+      password
+    })
+
+  await request(app)
+    .post('/api/user/logout')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send()
+    .expect(200)
+
+  const userFromDb = await User.findById(body.user._id)
+  expect(userFromDb.tokens).toHaveLength(0)
+})
+
+test('Should not logout if not logged in', async () => {
+  const user = new User({
+    email,
+    password
+  })
+
+  await user.save()
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '12h' })
+
+  await request(app)
+    .get(`/api/verify/${token}`)
+    .send()
+
+  await request(app)
+    .post('/api/user/logout')
+    .send()
+    .expect(401)
 })
