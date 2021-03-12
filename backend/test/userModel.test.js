@@ -4,12 +4,7 @@ const User = require('../src/models/userModel')
 let email, password
 
 beforeAll(async () => {
-  mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-
-  mongoose.set('useCreateIndex', true)
+  require('../src/db/mongoose')
 
   await User.deleteMany()
 
@@ -44,7 +39,7 @@ test('Should not create user if missing required field', async () => {
 
   try {
     await user.save()
-    throw new Error('It should not be able to save user if no email')
+    throw new Error('Should not be able to save user if no email')
   } catch (err) {
     expect(err.message).toBe('user validation failed: email: Path `email` is required.')
   }
@@ -58,7 +53,7 @@ test('Should not create user if password doesn\'t match rules', async () => {
 
   try {
     await user.save()
-    throw new Error('It should not be able to save user if password doesn\'t match rules')
+    throw new Error('Should not be able to save user if password doesn\'t match rules')
   } catch (error) {
     expect(error.message).toBe('user validation failed: password: Your password needs 8 characters, 1 lower character, 1 upper character, 1 special character and 1 number')
   }
@@ -79,7 +74,7 @@ test('Should not create user if email already used', async () => {
 
   try {
     await user2.save()
-    throw new Error('It should not be able to save another user with same email')
+    throw new Error('Should not be able to save another user with same email')
   } catch (error) {
     expect(error.keyPattern).toMatchObject({ email: 1 })
   }
