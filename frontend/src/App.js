@@ -77,6 +77,7 @@ const App = () => {
       <Switch>
         <Route path="/client" render={() => <Client
           logout={logout}
+          token={token}
           setShowSpinner={setShowSpinner}
           setWarning={setWarning}
         />} />
