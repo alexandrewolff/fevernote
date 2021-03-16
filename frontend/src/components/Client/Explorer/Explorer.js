@@ -3,11 +3,11 @@ import React from 'react'
 import Options from './Options/Options'
 import Notes from './Notes/Notes'
 
-const Explorer = () => {
+const Explorer = ({ notes, selectedNote }) => {
   return (
     <div>
-      <Options />
-      <Notes />
+      <Options notesCount={notes.length} />
+      <Notes notes={notes} selectedNote={selectedNote} />
     </div>
   )
 }

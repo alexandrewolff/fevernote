@@ -6,6 +6,7 @@ import Editor from './Editor/Editor'
 
 const Client = ({ logout, token, setShowSpinner, setWarning }) => {
   const [notes, setNotes] = useState([])
+  const [selectedNote, setSelectedNote] = useState(0)
 
   useEffect(() => {
     updateNoteList()
@@ -30,8 +31,8 @@ const Client = ({ logout, token, setShowSpinner, setWarning }) => {
 
   return (
     <div>
-      <Explorer notes={notes} />
-      <Editor />
+      <Explorer notes={notes} selectedNote={selectedNote} />
+      <Editor note={notes[selectedNote]} />
     </div>
   )
 }

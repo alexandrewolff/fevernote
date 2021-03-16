@@ -2,13 +2,21 @@ import React from 'react'
 
 import FilterDropdown from './FilterDropdown/FilterDropdown'
 
-const Options = () => {
+const Options = ({ notesCount }) => {
+  let noteCountText = ''
+
+  if (notesCount) {
+    noteCountText = notesCount > 1
+      ? `${notesCount} notes`
+      : `${notesCount} note`
+  }
+
   return (
     <div>
       <h2 className="options__title">Every notes</h2>
 
       <div className="options__wrapper">
-        <p className="options__notes-count"></p>
+        <p className="options__notes-count">{noteCountText}</p>
         <button className="options__filter-btn">
           <i className="fas fa-filter"></i>
         </button>
