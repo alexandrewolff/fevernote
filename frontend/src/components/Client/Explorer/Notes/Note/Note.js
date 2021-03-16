@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { formatMongodbTimestamp } from '../../../../../helpers/helpers'
+
 const trimText = (text, maxLength) => {
   if (text.length > maxLength) {
     text = `${text.substring(0, maxLength)}...`
@@ -17,7 +19,7 @@ const Note = ({ note }) => {
   title = trimText(title, MAX_TITLE_LENGTH)
   exerpt = trimText(exerpt, MAX_EXERPT_LENGHT)
 
-  const date = new Date(note.updatedAt).toDateString()
+  const date = formatMongodbTimestamp(note.updatedAt)
 
   return (
     <div className="note-item">

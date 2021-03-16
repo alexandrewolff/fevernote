@@ -4,6 +4,8 @@ import axios from 'axios'
 import Explorer from './Explorer/Explorer'
 import Editor from './Editor/Editor'
 
+const MAX_TITLE_LENGTH = 80
+
 const Client = ({ logout, token, setShowSpinner, setWarning }) => {
   const [notes, setNotes] = useState([])
   const [selectedNote, setSelectedNote] = useState(0)
@@ -29,10 +31,28 @@ const Client = ({ logout, token, setShowSpinner, setWarning }) => {
     }
   }
 
+  const titleInputHandler = (event) => {
+    if (event.target.value.length <= MAX_TITLE_LENGTH) {
+      const updatedNotes = [...notes]
+      updatedNotes[selectedNote].title = event.target.value
+      setNotes(updatedNotes)
+    }
+  }
+
+  const contentInputHandler = (event) => {
+    const updatedNotes = [...notes]
+    updatedNotes[selectedNote].content = event.target.value
+    setNotes(updatedNotes)
+  }
+
   return (
     <div>
       <Explorer notes={notes} selectedNote={selectedNote} />
-      <Editor note={notes[selectedNote]} />
+      <Editor
+        note={notes[selectedNote]}
+        titleInputHandler={titleInputHandler}
+        contentInputHandler={contentInputHandler}
+      />
     </div>
   )
 }
