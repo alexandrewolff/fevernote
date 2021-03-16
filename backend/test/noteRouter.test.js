@@ -11,7 +11,7 @@ beforeAll(async () => {
 
   title = 'My title'
   content = 'My test content'
-  email = 'joe@gmail.com',
+  email = 'joe@gmail.com'
   password = 'asSDd8f7fasd@#$sdaf'
 })
 
@@ -84,4 +84,36 @@ test('Should not create note if not logged in', async () => {
 
   const note = await Note.findOne({ title })
   expect(note).toBeNull()
+})
+
+test('Should get notes', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  const response = await request(app)
+    .get('/api/notes')
+    .set('Authorization', `Bearer ${body.token}`)
+    .expect(200)
+
+  expect(response.body).toHaveLength(1)
+})
+
+test('Should not get notes if not logged in', async () => {
+  await request(app)
+    .get('/api/notes')
+    .expect(401)
 })

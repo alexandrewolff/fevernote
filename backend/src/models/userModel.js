@@ -39,6 +39,12 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 })
 
+userSchema.virtual('notes', {
+  ref: 'note',
+  localField: '_id',
+  foreignField: 'user'
+})
+
 userSchema.methods.toPublicObject = function () {
   const { _id, email, createdAt, updatedAt, __v } = this
 

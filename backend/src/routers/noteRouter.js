@@ -18,4 +18,15 @@ router.post('/api/note', auth, async (req, res) => {
   }
 })
 
+router.get('/api/notes', auth, async (req, res) => {
+  try {
+    await req.user.populate({
+      path: 'notes'
+    }).execPopulate()
+    res.send(req.user.notes)
+  } catch {
+    res.status(500).send()
+  }
+})
+
 module.exports = router
