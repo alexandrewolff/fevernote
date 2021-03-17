@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TopMenu = () => {
+const SettingsDropdown = () => {
   return (
     <div>
 
@@ -8,4 +8,4 @@ const TopMenu = () => {
   )
 }
 
-export default TopMenu
+export default SettingsDropdown
