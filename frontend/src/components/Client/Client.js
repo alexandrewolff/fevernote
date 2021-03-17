@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import './Client.scss'
 import Explorer from './Explorer/Explorer'
 import Editor from './Editor/Editor'
 
@@ -46,7 +47,7 @@ const Client = ({ logout, token, setShowSpinner, setWarning }) => {
   }
 
   return (
-    <div>
+    <div className="client">
       <Explorer notes={notes} selectedNote={selectedNote} />
       <Editor
         note={notes[selectedNote]}

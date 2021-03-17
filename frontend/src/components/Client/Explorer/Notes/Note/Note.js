@@ -1,5 +1,6 @@
 import React from 'react'
 
+import './Note.scss'
 import { formatMongodbTimestamp } from '../../../../../helpers/helpers'
 
 const trimText = (text, maxLength) => {
@@ -22,10 +23,10 @@ const Note = ({ note }) => {
   const date = formatMongodbTimestamp(note.updatedAt)
 
   return (
-    <div className="note-item">
-      <h3 className="note-item__title">{title}</h3>
-      <p className="note-item__excerpt">{exerpt}</p>
-      <p className="note-item__date">{date}</p>
+    <div className="note">
+      <h3 className="note__title">{title}</h3>
+      <p className="note__excerpt">{exerpt}</p>
+      <p className="note__date">{date}</p>
     </div>
   )
 }

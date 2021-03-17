@@ -1,11 +1,11 @@
 import { configure, shallow } from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 
-import Input from './Input'
+import FormInput from './FormInput'
 
 configure({ adapter: new Adapter() })
 
-describe('<Input />', () => {
+describe('<FormInput />', () => {
   let errorMessage, fieldProps, wrapper
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('<Input />', () => {
       value: ''
     }
 
-    wrapper = shallow(<Input { ...fieldProps } />)
+    wrapper = shallow(<FormInput { ...fieldProps } />)
   })
 
   it('should render 1 <div> 1 <input> and 0 <p> at start', () => {

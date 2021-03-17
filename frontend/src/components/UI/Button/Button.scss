@@ -5,7 +5,7 @@
   height: 40px;
   border-radius: 4px;
   cursor: pointer;
-  color: var(--text-color-button);
+  color: var(--layout-color);
   font-weight: 500;
   outline: none;
 
@@ -44,6 +44,28 @@
       top: 0;
       border-radius: 0;
     }
+  }
+
+  &--danger {
+    border: 1px solid var(--high-contrast-color);
+    background: none;
+    color: var(--high-contrast-color);
+
+    &:hover {
+      background-color: var(--danger-color);
+      color: var(--layout-color);
+      border: 1px solid var(--danger-color);
+    }
+  }
+
+  &--settings {
+    color: var(--high-contrast-color);
+    background: none;
+    width: 40px;
+
+    &:hover {
+      background-color: var(--medium-contrast-color);
+  }
   }
 }
 

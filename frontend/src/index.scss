@@ -7,34 +7,13 @@
   --secondary-color: #ffc107;
   --secondary-color-faded: rgb(255, 193, 7, .4);
   --secondary-color-accent: #e4ab00;
-  --gradient: linear-gradient(to right, var(--primary-color) 30%, var(--secondary-color));
-  --gradient-faded: linear-gradient(140deg, var(--primary-color-faded) 30%, var(--secondary-color-faded));
-  --danger-red: #d32f2f;
+  --danger-color: #d32f2f;
 
-  --background-color-1: #fdfdfd;
-  --background-color-2: #f5f5f5;
-  --background-color-3: #979797;
-  --border-color-1: #e2e2e2;
-  --border-color-2: #5a5a5a;
-  --text-color-1: #1d1d1d;
-  --text-color-2: #6b6b6b;
-  --default-shadow-color: rgba(92, 92, 92, 0.473);
+  --layout-color: #fdfdfd;
+  --low-contrast-color: #ececec;
+  --medium-contrast-color: #cac9c9;
+  --high-contrast-color: #1d1d1d;
 
-  --border-color-dark-1: #404040;
-  --border-color-dark-2: #5c5c5c;
-  --background-color-dark-1: #262626;
-  --background-color-dark-2: #1A1A1A;
-  --background-color-dark-3: #404040;
-  --text-color-dark-1: #F2F2F2;
-  --text-color-dark-2: #c2c2c2;
-  --default-shadow-color-dark: rgba(0, 0, 0, 0.705);
-
-  --background-color-authentication-box: var(--background-color-1);
-  --background-color-modal-boxes: var(--background-color-1);
-  --border-color-authentication-box: var(--border-color-1);
-  --border-color-input: var(--border-color-1);
-  --placeholder-color: var(--border-color-1);
-  --text-color-button: var(--background-color-1);
-
+  --menu-height: 120px;
   --overlay-animation-timeout: .3s;
 }

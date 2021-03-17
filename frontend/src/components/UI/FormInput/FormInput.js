@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 
-import './Input.scss'
+import './FormInput.scss'
 
-const Input = ({ config, value, isValid, changeHandler }) => {
+const FormInput = ({ config, value, isValid, changeHandler }) => {
   let warningMessage = null
   if (!isValid && value) {
     warningMessage = <p className="input-box__warning">{config.warningMessage}</p>
@@ -14,7 +14,7 @@ const Input = ({ config, value, isValid, changeHandler }) => {
       inputElement = (
         <div className="input-box">
           <input
-            className="input"
+            className="input-box__field"
             type={config.type}
             placeholder={config.placeholder}
             value={value}
@@ -35,4 +35,4 @@ const Input = ({ config, value, isValid, changeHandler }) => {
   )
 }
 
-export default Input
+export default FormInput

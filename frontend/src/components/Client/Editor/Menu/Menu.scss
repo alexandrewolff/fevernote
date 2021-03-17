@@ -1,0 +1,24 @@
+.menu {
+  height: var(--menu-height);
+  border-bottom: 1px solid var(--medium-contrast-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  &__controls {
+    align-self: flex-end;
+    position: relative; // for dropdown menu placing
+    width: 330px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  &__last-modification {
+    font-size: 0.9em;
+  }
+}
+
+.menu__settings-icon {
+  font-size: 2em;
+}

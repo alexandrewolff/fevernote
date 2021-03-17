@@ -1,22 +1,23 @@
 import React from 'react'
 
+import './Menu.scss'
 import SettingsDropdown from './SettingsDropdown/SettingsDropdown'
 import Button from '../../../UI/Button/Button'
 
 const Menu = ({ noteTimestamp }) => {
   return (
-    <div className="top-menu">
-      <div className="top-menu__controls">
+    <div className="menu">
+      <div className="menu__controls">
         <Button>New Note</Button>
         <Button>Save</Button>
         <Button danger>Delete</Button>
         <Button settings>
-            <i className="fas fa-cog"></i>
+            <i className="fas fa-cog menu__settings-icon"></i>
         </Button>
         <SettingsDropdown />
       </div>
 
-      <p className="top-menu__last-modification">{noteTimestamp}</p>
+      <p className="menu__last-modification">Last modification on {noteTimestamp}</p>
   </div>
   )
 }

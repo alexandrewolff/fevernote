@@ -1,0 +1,35 @@
+.note {
+  cursor: pointer;
+  padding: 14px 14px 14px 18px;
+  width: 92%;
+  height: 110px;
+  border: 2px solid transparent;
+  border-bottom: 1px solid var(--medium-contrast-color);
+  overflow: hidden;
+  word-wrap: break-word;
+
+  &:hover {
+    background-color: var(--layout-color);
+  }
+
+  &--selected {
+    border: solid var(--primary-color-accent) 2px;
+    border-radius: 4px;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 1.1em;
+  }
+
+  &__excerpt {
+    font-size: 0.9em;
+  }
+  
+  &__date {
+    font-size: 0.8em;
+  }
+}
+
+
+

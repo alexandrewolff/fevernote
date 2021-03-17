@@ -1,8 +1,10 @@
 import React from 'react'
 
-import { formatMongodbTimestamp } from '../../../helpers/helpers'
+import './Editor.scss'
 import Menu from './Menu/Menu'
 import Content from './Content/Content'
+
+import { formatMongodbTimestamp } from '../../../helpers/helpers'
 
 const Editor = ({ note, titleInputHandler, contentInputHandler }) => {
   let date = null
@@ -21,7 +23,7 @@ const Editor = ({ note, titleInputHandler, contentInputHandler }) => {
   }
 
   return (
-    <div className="note-display">
+    <div className="editor">
       <Menu noteTimestamp={date} />
       {content}
     </div>

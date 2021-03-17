@@ -1,5 +1,6 @@
 import React from 'react'
 
+import './Notes.scss'
 import Note from './Note/Note'
 
 const Notes = ({ notes, selectedNote }) => {
@@ -9,16 +10,14 @@ const Notes = ({ notes, selectedNote }) => {
     notesElements = notes.map((note, index) => (
       <Note
         key={note._id}
-        // selected={index === selectedNote}
         note={note}
-        // noteSelectionHandler={() => this.props.noteSelectionHandler(note._id)}
       />
     ))
   }
 
   return (
     <div>
-      <div className="notes-list">{notesElements}</div>
+      <div className="notes">{notesElements}</div>
     </div>
   )
 }

@@ -1,0 +1,34 @@
+.input-box {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4px;
+
+  &__field {
+    padding: 14px 14px 14px 14px;
+    width: 65%;
+    border: 1px var(--low-contrast-color) solid;
+    border-radius: 6px;
+    outline: none;
+    transition: .2s ease-out;
+
+    &::placeholder {
+      color: var(--medium-contrast-color);
+    }
+    
+    &:focus {
+      border: 1px var(--primary-color-faded) solid;
+      box-shadow: 0 0 2px 1px var(--primary-color-faded);
+    }
+  }
+
+  &__warning {
+    color: var(--secondary-color);
+    margin-top: 6px;
+    font-size: 75%;
+    text-align: center;
+    width: 70%;
+  }
+}

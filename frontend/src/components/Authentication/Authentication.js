@@ -3,7 +3,7 @@ import axios from 'axios'
 import validator from 'validator'
 
 import './Authentication.scss'
-import Input from '../UI/Input/Input'
+import FormInput from '../UI/FormInput/FormInput'
 import Button from '../UI/Button/Button'
 
 const Authentication = ({ login, setShowSpinner, setWarning }) => {
@@ -146,7 +146,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     if (!showSignupMenu && field === 'passwordConfirmation') continue
 
     fieldsElements.push(
-      <Input
+      <FormInput
         key={field}
         config={fields[field].config}
         value={fields[field].value}
