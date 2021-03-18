@@ -5,6 +5,7 @@ const { decodeToken } = require('../helpers/token')
 
 const ACCOUNT_VALIDATION_EXPIRATION_TIME = '12h'
 const LOGIN_EXPIRATION_TIME = '1h'
+const GUEST_EXPIRATION_TIME = '12h'
 
 const router = new Router()
 
@@ -21,6 +22,27 @@ router.post('/api/user', async (req, res) => {
     }
 
     res.status(400).send(error)
+  }
+})
+
+router.post('/api/guest', async (req, res) => {
+  const user = new User({
+    email: `${Date.now()}@guest.com`,
+    password: `${Date.now()}rR3#`,
+    isVerified: true
+  })
+
+  try {
+    await user.populateAuthToken(GUEST_EXPIRATION_TIME)
+    const lastToken = user.tokens.slice(-1)[0]
+
+    res.status(201).send({
+      user: user.toPublicObject(),
+      token: lastToken,
+      expiration: GUEST_EXPIRATION_TIME
+    })
+  } catch (error) {
+    res.status(400).send(error.message)
   }
 })
 
@@ -76,10 +98,9 @@ router.post('/api/login', async (req, res) => {
     }
 
     await user.populateAuthToken(LOGIN_EXPIRATION_TIME)
-
     const lastToken = user.tokens.slice(-1)[0]
 
-    res.send({
+    res.status(200).send({
       user: user.toPublicObject(),
       token: lastToken,
       expiration: LOGIN_EXPIRATION_TIME

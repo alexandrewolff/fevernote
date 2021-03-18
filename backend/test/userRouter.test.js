@@ -29,8 +29,8 @@ test('Should signup user', async () => {
   expect(response.body.password).toBe(undefined)
   expect(response.body.tokens).toBe(undefined)
 
-  const user = await User.findOne({ email })
-  expect(user).not.toBeNull()
+  const userFromDb = await User.findOne({ email })
+  expect(userFromDb).not.toBeNull()
 })
 
 test('Should not signup user if no email', async () => {
@@ -288,4 +288,13 @@ test('Should not logout if not logged in', async () => {
     .post('/api/logout')
     .send()
     .expect(401)
+})
+
+test('Should launch guest account', async () => {
+  const response = await request(app)
+    .post('/api/guest')
+    .send()
+    .expect(201)
+
+  expect(response.body.token).not.toBeUndefined()
 })

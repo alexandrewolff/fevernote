@@ -107,7 +107,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
     const endpoint = showSignupMenu ? 'user' : 'login'
 
     try {
-      const response = await axios.post(endpoint, payload, { timeout: 8000 })
+      const response = await axios.post(endpoint, payload)
 
       setShowSpinner(false)
 
@@ -117,6 +117,26 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
       } else {
         login(response.data.token, response.data.expiration)
       }
+    } catch (error) {
+      setShowSpinner(false)
+
+      if (error.response) {
+        setWarning({ show: true, content: error.response.data })
+      } else {
+        setWarning({ show: true, content: error.message })
+      }
+    }
+  }
+
+  const launchGuestAccount = async () => {
+    try {
+      setShowSpinner(true)
+
+      const response = await axios.post('guest')
+
+      setShowSpinner(false)
+      login(response.data.token, response.data.expiration)
+      emptyFields()
     } catch (error) {
       setShowSpinner(false)
 
@@ -191,7 +211,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
           {menuSwitch}
 
           <p>or</p>
-          <p><a className="menu-switch__link" onClick={() => {}}>Try with a guest account!</a></p>
+          <p><a className="menu-switch__link" onClick={launchGuestAccount}>Try with a guest account!</a></p>
         </div>
       </div>
     </div>
