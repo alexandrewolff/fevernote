@@ -3,7 +3,7 @@ import React from 'react'
 import './Options.scss'
 import FilterDropdown from './FilterDropdown/FilterDropdown'
 
-const Options = ({ notesCount }) => {
+const Options = ({ notesCount, setSearch }) => {
   let noteCountText = ''
 
   if (notesCount) {
@@ -23,7 +23,12 @@ const Options = ({ notesCount }) => {
         </button>
       </div>
 
-      <input className='options__search' type="text" placeholder="Search" />
+      <input
+        className='options__search'
+        type="text"
+        placeholder="Search"
+        onChange={(event) => setSearch(event.target.value)}
+      />
     </div>
   )
 }
