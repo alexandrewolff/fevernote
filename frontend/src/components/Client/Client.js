@@ -110,6 +110,11 @@ const Client = ({
     }
   }
 
+  const noteSelectionHandler = (id) => {
+    const newSelectedNote = notes.findIndex(note => note._id === id)
+    setSelectedNote(newSelectedNote)
+  }
+
   const titleInputHandler = (event) => {
     if (event.target.value.length <= MAX_TITLE_LENGTH) {
       const updatedNotes = [...notes]
@@ -126,7 +131,11 @@ const Client = ({
 
   return (
     <div className="client">
-      <Explorer notes={notes} selectedNote={selectedNote} />
+      <Explorer
+        notes={notes}
+        selectedNote={selectedNote}
+        noteSelectionHandler={noteSelectionHandler}
+      />
       <Editor
         note={notes[selectedNote]}
         titleInputHandler={titleInputHandler}

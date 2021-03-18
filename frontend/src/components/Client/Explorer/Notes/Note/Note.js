@@ -10,7 +10,7 @@ const trimText = (text, maxLength) => {
   return text
 }
 
-const Note = ({ note }) => {
+const Note = ({ selected, note, noteSelectionHandler }) => {
   const MAX_TITLE_LENGTH = 28
   const MAX_EXERPT_LENGHT = 88
 
@@ -22,8 +22,17 @@ const Note = ({ note }) => {
 
   const date = formatMongodbTimestamp(note.updatedAt)
 
+  const classes = ['note']
+
+  if (selected) {
+    classes.push('note--selected')
+  }
+
   return (
-    <div className="note">
+    <div
+      className={classes.join(' ')}
+      onClick={noteSelectionHandler}
+    >
       <h3 className="note__title">{title}</h3>
       <p className="note__excerpt">{exerpt}</p>
       <p className="note__date">{date}</p>
