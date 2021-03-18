@@ -7,13 +7,14 @@ import { toMilliseconds } from 'yaspar'
 import './App.scss'
 import Authentication from './components/Authentication/Authentication'
 import Client from './components/Client/Client'
-import Spinner from './components/UI/overlay/Spinner/Spinner'
 import Warning from './components/UI/overlay/Warning/Warning'
+import Modal from './components/UI/overlay/Modal/Modal'
+import Spinner from './components/UI/overlay/Spinner/Spinner'
 
 const App = () => {
   const [token, setToken] = useState('')
   const [warning, setWarning] = useState({ show: false, content: '' })
-  const [showModal, setShowModal] = useState(false)
+  const [modal, setModal] = useState({ show: false, onValidation: null })
   const [showSpinner, setShowSpinner] = useState(false)
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const App = () => {
     setShowSpinner(true)
 
     try {
-      const response = await axios.get(`/verify/${token}`, { timeout: 8000 })
+      const response = await axios.get(`/verify/${token}`)
 
       setShowSpinner(false)
       setWarning({ show: true, content: `Your ${response.data.email} account has been verified. Enjoy!` })
@@ -79,6 +80,7 @@ const App = () => {
           logout={logout}
           token={token}
           setShowSpinner={setShowSpinner}
+          setModal={setModal}
           setWarning={setWarning}
         />} />
         <Redirect to="/client" />
@@ -106,25 +108,38 @@ const App = () => {
       <CSSTransition
         mountOnEnter
         unmountOnExit
-        in={showSpinner}
-        timeout={300}
-        classNames="overlay--visible"
-      >
-        <Spinner />
-      </CSSTransition>
-
-      <CSSTransition
-        mountOnEnter
-        unmountOnExit
         in={warning.show}
         timeout={300}
         classNames="overlay--visible"
       >
         <Warning
-          closeWarning={() => setWarning({ ...warning, show: false })}
+          close={() => setWarning({ ...warning, show: false })}
         >
           {warning.content}
         </Warning>
+      </CSSTransition>
+
+      <CSSTransition
+        mountOnEnter
+        unmountOnExit
+        in={modal.show}
+        timeout={300}
+        classNames="overlay--visible"
+      >
+        <Modal
+          onValidation={modal.onValidation}
+          close={() => setModal({ ...modal, show: false })}
+        />
+      </CSSTransition>
+
+      <CSSTransition
+        mountOnEnter
+        unmountOnExit
+        in={showSpinner}
+        timeout={300}
+        classNames="overlay--visible"
+      >
+        <Spinner />
       </CSSTransition>
     </div>
   )

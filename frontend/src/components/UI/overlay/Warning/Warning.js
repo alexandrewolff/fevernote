@@ -5,16 +5,16 @@ import './Warning.scss'
 import Backdrop from '../Backdrop/Backdrop'
 import Button from '../../Button/Button'
 
-const Warning = ({ children, closeWarning }) => {
+const Warning = ({ children, close }) => {
   return (
     <div className="overlay">
-      <Backdrop clickHandler={closeWarning} />
+      <Backdrop clickHandler={close} />
 
-      <div className="warning-box">
-        <div className="warning-box__wrapper">
+      <div className="warning">
+        <div className="warning__wrapper">
 
-            <p className="warning-box__text">{children}</p>
-            <Button clickHandler={closeWarning}>Okay!</Button>
+            <p className="warning__text">{children}</p>
+            <Button clickHandler={close}>Okay!</Button>
 
         </div>
       </div>

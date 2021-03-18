@@ -1,4 +1,4 @@
-.warning {
+.modal {
   background-color: var(--layout-color);
   border-radius: 8px;
   box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.2);
@@ -21,5 +21,11 @@
   
   &__text {
     font-size: 1.4em;
+  }
+
+  &__controls {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
   }
 }

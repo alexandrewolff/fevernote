@@ -32,20 +32,39 @@
 }
 
 .overlay--visible {
-  &-enter .warning-box {
+  &-enter .warning {
     transform: scale(.9);
     transition: transform var(--overlay-animation-timeout);
   }
 
-  &-enter-active .warning-box {
+  &-enter-active .warning {
     transform: scale(1);
   }
 
-  &-exit .warning-box {
+  &-exit .warning {
     transition: transform 2s;
   }
 
-  &-exit-active .warning-box {
+  &-exit-active .warning {
+    transform: scale(2);
+  }
+}
+
+.overlay--visible {
+  &-enter .modal {
+    transform: scale(.9);
+    transition: transform var(--overlay-animation-timeout);
+  }
+
+  &-enter-active .modal {
+    transform: scale(1);
+  }
+
+  &-exit .modal {
+    transition: transform 2s;
+  }
+
+  &-exit-active .modal {
     transform: scale(2);
   }
 }

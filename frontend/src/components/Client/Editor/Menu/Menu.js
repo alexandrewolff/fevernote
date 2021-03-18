@@ -4,13 +4,26 @@ import './Menu.scss'
 import SettingsDropdown from './SettingsDropdown/SettingsDropdown'
 import Button from '../../../UI/Button/Button'
 
-const Menu = ({ noteTimestamp, createNoteHandler }) => {
+const Menu = ({
+  noteTimestamp,
+  createNoteHandler,
+  saveNoteHandler,
+  deleteNoteHandler,
+  setModal,
+  logout
+}) => {
   return (
     <div className="menu">
       <div className="menu__controls">
         <Button clickHandler={createNoteHandler}>New Note</Button>
-        <Button>Save</Button>
-        <Button danger>Delete</Button>
+        <Button clickHandler={saveNoteHandler}>Save</Button>
+        <Button
+          danger
+          clickHandler={() => setModal({
+            show: true,
+            onValidation: deleteNoteHandler
+          })}
+        >Delete</Button>
         <Button settings>
             <i className="fas fa-cog menu__settings-icon"></i>
         </Button>
