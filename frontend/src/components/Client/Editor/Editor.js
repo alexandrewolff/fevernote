@@ -6,7 +6,7 @@ import Content from './Content/Content'
 
 import { formatMongodbTimestamp } from '../../../helpers/helpers'
 
-const Editor = ({ note, titleInputHandler, contentInputHandler }) => {
+const Editor = ({ note, titleInputHandler, contentInputHandler, createNoteHandler }) => {
   let date = null
   let content = null
 
@@ -24,7 +24,10 @@ const Editor = ({ note, titleInputHandler, contentInputHandler }) => {
 
   return (
     <div className="editor">
-      <Menu noteTimestamp={date} />
+      <Menu
+        noteTimestamp={date}
+        createNoteHandler={createNoteHandler}
+      />
       {content}
     </div>
   )

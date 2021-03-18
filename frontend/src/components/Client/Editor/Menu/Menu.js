@@ -4,11 +4,11 @@ import './Menu.scss'
 import SettingsDropdown from './SettingsDropdown/SettingsDropdown'
 import Button from '../../../UI/Button/Button'
 
-const Menu = ({ noteTimestamp }) => {
+const Menu = ({ noteTimestamp, createNoteHandler }) => {
   return (
     <div className="menu">
       <div className="menu__controls">
-        <Button>New Note</Button>
+        <Button clickHandler={createNoteHandler}>New Note</Button>
         <Button>Save</Button>
         <Button danger>Delete</Button>
         <Button settings>

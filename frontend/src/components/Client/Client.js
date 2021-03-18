@@ -12,10 +12,10 @@ const Client = ({ logout, token, setShowSpinner, setWarning }) => {
   const [selectedNote, setSelectedNote] = useState(0)
 
   useEffect(() => {
-    updateNoteList()
+    updateNotes()
   }, [])
 
-  const updateNoteList = async () => {
+  const updateNotes = async () => {
     setShowSpinner(true)
 
     try {
@@ -29,6 +29,30 @@ const Client = ({ logout, token, setShowSpinner, setWarning }) => {
     } catch (error) {
       setShowSpinner(false)
       setWarning({ show: true, content: `Couldn't get your notes: ${error.message}` })
+    }
+  }
+
+  const createNoteHandler = async () => {
+    setShowSpinner(true)
+
+    try {
+      await axios.post(
+        '/note',
+        {
+          title: '',
+          content: ''
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      setShowSpinner(false)
+      updateNotes()
+    } catch (error) {
+      setShowSpinner(false)
+      setWarning({
+        show: true,
+        content: `Couldn't create a new note: ${error.message}`
+      })
     }
   }
 
@@ -53,6 +77,7 @@ const Client = ({ logout, token, setShowSpinner, setWarning }) => {
         note={notes[selectedNote]}
         titleInputHandler={titleInputHandler}
         contentInputHandler={contentInputHandler}
+        createNoteHandler={createNoteHandler}
       />
     </div>
   )

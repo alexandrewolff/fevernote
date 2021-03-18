@@ -16,9 +16,7 @@ const Notes = ({ notes, selectedNote }) => {
   }
 
   return (
-    <div>
-      <div className="notes">{notesElements}</div>
-    </div>
+    <div className="notes">{notesElements}</div>
   )
 }
 
