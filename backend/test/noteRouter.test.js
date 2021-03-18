@@ -117,3 +117,195 @@ test('Should not get notes if not logged in', async () => {
     .get('/api/notes')
     .expect(401)
 })
+
+test('Should update note', async () => {
+  const newTitle = 'New title'
+  const newContent = 'New content'
+
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  const response = await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .put(`/api/note/${response.body._id}`)
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({ title: newTitle, content: newContent })
+    .expect(200)
+
+  const note = await Note.findOne({ _id: response.body._id })
+  expect(note.title).toBe(newTitle)
+  expect(note.content).toBe(newContent)
+})
+
+test('Should not update note if invalid id', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .put('/api/note/invalidId')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({ title: 'New title', content: 'New content' })
+    .expect(400)
+})
+
+test('Should not update note if not logged in', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  const response = await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .put(`/api/note/${response.body._id}`)
+    .send({ title: 'New title', content: 'New content' })
+    .expect(401)
+
+  const note = await Note.findOne({ _id: response.body._id })
+  expect(note.title).toBe(title)
+  expect(note.content).toBe(content)
+})
+
+test('Should not update note if invalid fields provided', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  const response = await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .put(`/api/note/${response.body._id}`)
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({ title: 'New title', content: 'New content', invalidField: 'Lorem' })
+    .expect(400)
+
+  const note = await Note.findOne({ _id: response.body._id })
+  expect(note.title).toBe(title)
+  expect(note.content).toBe(content)
+  expect(note.invalidField).toBeUndefined()
+})
+
+test('Should delete note', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  const response = await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .delete(`/api/note/${response.body._id}`)
+    .set('Authorization', `Bearer ${body.token}`)
+    .expect(200)
+
+  const note = await Note.findOne({ _id: response.body._id })
+  expect(note).toBeNull()
+})
+
+test('Should not delete note if not logged in', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  const response = await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .delete(`/api/note/${response.body._id}`)
+    .expect(401)
+
+  const note = await Note.findOne({ _id: response.body._id })
+  expect(note).not.toBeNull()
+})
+
+test('Should not delete note if invalid id', async () => {
+  const { body } = await request(app)
+    .post('/api/login')
+    .send({
+      email,
+      password
+    })
+    .expect(200)
+
+  await request(app)
+    .post('/api/note')
+    .set('Authorization', `Bearer ${body.token}`)
+    .send({
+      title,
+      content
+    })
+    .expect(201)
+
+  await request(app)
+    .delete('/api/note/invalidId')
+    .set('Authorization', `Bearer ${body.token}`)
+    .expect(500)
+})
