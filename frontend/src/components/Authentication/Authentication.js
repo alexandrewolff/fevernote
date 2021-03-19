@@ -187,7 +187,7 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
   } else {
     menuSwitch = (
       <Fragment>
-        <p>Don't have an account?</p>
+        <p>Don&rsquo;t have an account?</p>
         <p><a className="menu-switch__link" onClick={switchMenuHandler}>Create account</a></p>
       </Fragment>
     )

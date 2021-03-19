@@ -24,7 +24,7 @@ const Client = ({
 
   useEffect(() => {
     if (notes.length > 0) setSelectedNoteId(notes[0]._id)
-  }, [])
+  }, [notes])
 
   const updateNotes = async () => {
     try {
