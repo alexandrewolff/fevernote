@@ -1,5 +1,5 @@
 .content {
-  padding: 20px 0 0 30px;
+  padding: 20px 30px 0 30px;
   overflow-y: auto;
   text-align: justify;
   flex: 1;
@@ -8,29 +8,34 @@
   align-items: flex-start;
 
   &__title,
-  &__text {
+  &__title-field,
+  &__text,
+  &__text-field {
+    width: 100%;
+  }
+
+  &__title-field,
+  &__text-field {
     outline: none;
     border: none;
     background-color: transparent;
     font-family: inherit;
-    width: 100%;
   }
   
-  &__title {
+  &__title-field {
     font-size: 1.6em;
     font-weight: 500;
     margin-bottom: 14px;
     padding: 0;
   }
   
-  &__paragraph {
+  &__text {
     flex: 1;
   }
   
-  &__text {
+  &__text-field {
     font-size: 1em;
     resize: none;
-    overflow-y: auto;
     height: 100%;
   }
 }
