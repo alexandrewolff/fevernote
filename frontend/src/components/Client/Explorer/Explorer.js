@@ -4,7 +4,7 @@ import './Explorer.scss'
 import Options from './Options/Options'
 import Notes from './Notes/Notes'
 
-const Explorer = ({ notes, selectedNote, setSelectedNote }) => {
+const Explorer = ({ notes, selectedNoteId, setSelectedNoteId }) => {
   const [search, setSearch] = useState('')
 
   const lowerCaseSearch = search.toLowerCase()
@@ -23,8 +23,8 @@ const Explorer = ({ notes, selectedNote, setSelectedNote }) => {
       />
       <Notes
         notes={filteredNotes}
-        selectedNote={selectedNote}
-        setSelectedNote={setSelectedNote}
+        selectedNoteId={selectedNoteId}
+        setSelectedNoteId={setSelectedNoteId}
       />
     </div>
   )

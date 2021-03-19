@@ -15,7 +15,7 @@ const Client = ({
   setWarning
 }) => {
   const [notes, setNotes] = useState([])
-  const [selectedNote, setSelectedNote] = useState('')
+  const [selectedNoteId, setSelectedNoteId] = useState('')
 
   useEffect(() => {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`
@@ -23,8 +23,8 @@ const Client = ({
   }, [token])
 
   useEffect(() => {
-    if (notes.length > 0) setSelectedNote(notes[0]._id)
-  }, [notes])
+    if (notes.length > 0) setSelectedNoteId(notes[0]._id)
+  }, [])
 
   const updateNotes = async () => {
     try {
@@ -69,10 +69,10 @@ const Client = ({
     try {
       setShowSpinner(true)
 
-      await axios.put(`/note/${notes[selectedNote]._id}`,
+      await axios.put(`/note/${notes[getSelectedNoteIndex()]._id}`,
         {
-          title: notes[selectedNote].title,
-          content: notes[selectedNote].content
+          title: notes[getSelectedNoteIndex()].title,
+          content: notes[getSelectedNoteIndex()].content
         }
       )
 
@@ -97,7 +97,7 @@ const Client = ({
       setShowSpinner(true)
 
       await axios.delete(
-        `/note/${notes[selectedNote]._id}`
+        `/note/${notes[getSelectedNoteIndex()]._id}`
       )
 
       setShowSpinner(false)
@@ -117,26 +117,32 @@ const Client = ({
   const titleInputHandler = (event) => {
     if (event.target.value.length <= MAX_TITLE_LENGTH) {
       const updatedNotes = [...notes]
-      updatedNotes[selectedNote].title = event.target.value
+      updatedNotes[getSelectedNoteIndex()].title = event.target.value
       setNotes(updatedNotes)
     }
   }
 
   const contentInputHandler = (event) => {
     const updatedNotes = [...notes]
-    updatedNotes[selectedNote].content = event.target.value
+    updatedNotes[getSelectedNoteIndex()].content = event.target.value
     setNotes(updatedNotes)
+  }
+
+  const getSelectedNoteIndex = () => {
+    const note = notes.find(note => note._id === selectedNoteId)
+    const index = notes.indexOf(note)
+    return index
   }
 
   return (
     <div className="client">
       <Explorer
         notes={notes}
-        selectedNote={selectedNote}
-        setSelectedNote={setSelectedNote}
+        selectedNoteId={selectedNoteId}
+        setSelectedNoteId={setSelectedNoteId}
       />
       <Editor
-        note={notes[selectedNote]}
+        note={notes[getSelectedNoteIndex()]}
         titleInputHandler={titleInputHandler}
         contentInputHandler={contentInputHandler}
         createNoteHandler={createNoteHandler}
