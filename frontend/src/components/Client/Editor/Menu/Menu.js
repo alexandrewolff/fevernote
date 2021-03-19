@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import './Menu.scss'
 import SettingsDropdown from './SettingsDropdown/SettingsDropdown'
@@ -12,6 +12,21 @@ const Menu = ({
   setModal,
   logout
 }) => {
+  const [showDropdown, setShowDropdown] = useState(false)
+
+  const clickHandler = () => {
+    if (!showDropdown) setShowDropdown(true)
+  }
+
+  let dropdown = null
+
+  if (showDropdown) {
+    dropdown = <SettingsDropdown
+      setShowDropdown={setShowDropdown}
+      logout={logout}
+    />
+  }
+
   return (
     <div className="menu">
       <div className="menu__controls">
@@ -24,10 +39,14 @@ const Menu = ({
             onValidation: deleteNoteHandler
           })}
         >Delete</Button>
-        <Button settings>
+        <Button
+          settings
+          clickHandler={clickHandler}
+        >
             <i className="fas fa-cog menu__settings-icon"></i>
         </Button>
-        <SettingsDropdown />
+
+        {dropdown}
       </div>
 
       <p className="menu__last-modification">Last modification on {noteTimestamp}</p>

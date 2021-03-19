@@ -37,10 +37,21 @@ const App = () => {
     setSessionTimeout(toMilliseconds(expiration))
   }
 
-  const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('expirationTime')
-    setToken('')
+  const logout = async () => {
+    try {
+      setShowSpinner(true)
+
+      await axios.post('/logout')
+
+      localStorage.removeItem('token')
+      localStorage.removeItem('expirationTime')
+      setToken('')
+
+      setShowSpinner(false)
+    } catch (error) {
+      setShowSpinner(false)
+      setWarning({ show: true, content: error.message })
+    }
   }
 
   const verifyAccount = async (props) => {

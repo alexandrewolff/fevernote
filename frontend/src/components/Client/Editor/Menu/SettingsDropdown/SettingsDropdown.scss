@@ -1,0 +1,13 @@
+.settings-dropdown {
+  position: absolute;
+  background-color: var(--layout-color);
+  right: 0;
+  top: 44px;
+  border: 1px solid var(--low-contrast-color);
+  border-radius: 4px;
+  box-shadow: 2px 2px 6px var(--medium-contrast-color);
+  padding: 24px;
+  text-align: center;
+  width: 60%;
+  // transform: translateY(-3px);
+}
