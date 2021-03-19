@@ -15,12 +15,16 @@ const Client = ({
   setWarning
 }) => {
   const [notes, setNotes] = useState([])
-  const [selectedNote, setSelectedNote] = useState(0)
+  const [selectedNote, setSelectedNote] = useState('')
 
   useEffect(() => {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`
     updateNotes()
   }, [token])
+
+  useEffect(() => {
+    if (notes.length > 0) setSelectedNote(notes[0]._id)
+  }, [notes])
 
   const updateNotes = async () => {
     try {
@@ -110,11 +114,6 @@ const Client = ({
     }
   }
 
-  const noteSelectionHandler = (id) => {
-    const newSelectedNote = notes.findIndex(note => note._id === id)
-    setSelectedNote(newSelectedNote)
-  }
-
   const titleInputHandler = (event) => {
     if (event.target.value.length <= MAX_TITLE_LENGTH) {
       const updatedNotes = [...notes]
@@ -134,7 +133,7 @@ const Client = ({
       <Explorer
         notes={notes}
         selectedNote={selectedNote}
-        noteSelectionHandler={noteSelectionHandler}
+        setSelectedNote={setSelectedNote}
       />
       <Editor
         note={notes[selectedNote]}

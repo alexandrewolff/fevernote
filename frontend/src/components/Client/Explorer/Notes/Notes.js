@@ -3,15 +3,15 @@ import React from 'react'
 import './Notes.scss'
 import Note from './Note/Note'
 
-const Notes = ({ notes, selectedNote, noteSelectionHandler }) => {
+const Notes = ({ notes, selectedNote, setSelectedNote }) => {
   let notesElements = null
 
   if (notes) {
     notesElements = notes.map((note, index) => (
       <Note
         key={note._id}
-        selected={index === selectedNote}
-        noteSelectionHandler={() => noteSelectionHandler(note._id)}
+        selected={note._id === selectedNote}
+        noteSelectionHandler={() => setSelectedNote(note._id)}
         note={note}
       />
     ))

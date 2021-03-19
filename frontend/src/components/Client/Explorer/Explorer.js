@@ -4,10 +4,16 @@ import './Explorer.scss'
 import Options from './Options/Options'
 import Notes from './Notes/Notes'
 
-const Explorer = ({ notes, selectedNote, noteSelectionHandler }) => {
+const Explorer = ({ notes, selectedNote, setSelectedNote }) => {
   const [search, setSearch] = useState('')
 
-  const filteredNotes = notes.filter(note => note.title.includes(search) || note.content.includes(search))
+  const lowerCaseSearch = search.toLowerCase()
+
+  const filteredNotes = notes.filter(note => {
+    const lowerCaseTitle = note.title.toLowerCase()
+    const lowerCaseContent = note.content.toLowerCase()
+    return lowerCaseTitle.includes(lowerCaseSearch) || lowerCaseContent.includes(lowerCaseSearch)
+  })
 
   return (
     <div className="explorer">
@@ -18,7 +24,7 @@ const Explorer = ({ notes, selectedNote, noteSelectionHandler }) => {
       <Notes
         notes={filteredNotes}
         selectedNote={selectedNote}
-        noteSelectionHandler={noteSelectionHandler}
+        setSelectedNote={setSelectedNote}
       />
     </div>
   )
