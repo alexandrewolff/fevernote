@@ -16,6 +16,7 @@ const App = () => {
   const [warning, setWarning] = useState({ show: false, content: '' })
   const [modal, setModal] = useState({ show: false, onValidation: null })
   const [showSpinner, setShowSpinner] = useState(false)
+  const [timeoutRef, setTimeoutRef] = useState(null)
 
   useEffect(() => {
     const localStorageExpirationTime = parseInt(localStorage.getItem('expirationTime'))
@@ -42,6 +43,9 @@ const App = () => {
       setShowSpinner(true)
 
       await axios.post('/logout')
+
+      clearTimeout(timeoutRef)
+      setTimeoutRef(null)
 
       localStorage.removeItem('token')
       localStorage.removeItem('expirationTime')
@@ -76,10 +80,12 @@ const App = () => {
   }
 
   const setSessionTimeout = (delay) => {
-    setTimeout(() => {
+    const reference = setTimeout(() => {
       logout()
       setWarning({ show: true, content: 'Your session has expired, please sign in again.' })
     }, delay)
+
+    setTimeoutRef(reference)
   }
 
   let routes = null
