@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import './Menu.scss'
-import SettingsDropdown from './SettingsDropdown/SettingsDropdown'
+import DropdownMenu from '../../../UI/DropdownMenu/DropdownMenu'
 import Button from '../../../UI/Button/Button'
 
 const Menu = ({
@@ -21,10 +21,14 @@ const Menu = ({
   let dropdown = null
 
   if (showDropdown) {
-    dropdown = <SettingsDropdown
-      setShowDropdown={setShowDropdown}
-      logout={logout}
-    />
+    dropdown = (
+      <DropdownMenu
+        position={{ right: '0', top: '44px' }}
+        setShowDropdown={setShowDropdown}
+      >
+        <Button danger clickHandler={logout}>Logout</Button>
+      </DropdownMenu>
+    )
   }
 
   return (
