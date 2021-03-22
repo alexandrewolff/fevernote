@@ -48,18 +48,18 @@ router.post('/api/guest', async (req, res) => {
 
 router.get('/api/verify/:token', async (req, res) => {
   let tokenPayload
-
   try {
     tokenPayload = decodeToken(req.params.token)
   } catch {
     return res.status(404).send()
   }
 
-  const user = await User.findOne({ _id: tokenPayload.id })
+  const user = await User.findOne({ _id: tokenPayload._id })
 
   if (!user) {
     return res.status(404).send()
   }
+  console.log('coucou')
 
   if (user.isVerified) {
     return res.status(400).send('Email already verified')

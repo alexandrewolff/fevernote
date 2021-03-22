@@ -14,6 +14,15 @@ const Menu = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState(false)
 
+  let lastModification = null
+  if (noteTimestamp) {
+    lastModification = (
+      <p className="menu__last-modification">
+        Last modification on {noteTimestamp}
+      </p>
+    )
+  }
+
   const clickHandler = () => {
     if (!showDropdown) setShowDropdown(true)
   }
@@ -53,7 +62,7 @@ const Menu = ({
         {dropdown}
       </div>
 
-      <p className="menu__last-modification">Last modification on {noteTimestamp}</p>
+      {lastModification}
   </div>
   )
 }
