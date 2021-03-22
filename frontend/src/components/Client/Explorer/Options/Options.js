@@ -1,7 +1,6 @@
 import React from 'react'
 
 import './Options.scss'
-import FilterDropdown from './FilterDropdown/FilterDropdown'
 
 const Options = ({ notesCount, setSearch }) => {
   let noteCountText = ''
@@ -18,9 +17,6 @@ const Options = ({ notesCount, setSearch }) => {
 
       <div className="options__wrapper">
         <p className="options__notes-count">{noteCountText}</p>
-        <button className="options__filter-btn">
-          <i className="fas fa-filter"></i>
-        </button>
       </div>
 
       <input
@@ -29,6 +25,7 @@ const Options = ({ notesCount, setSearch }) => {
         placeholder="Search"
         onChange={(event) => setSearch(event.target.value)}
       />
+
     </div>
   )
 }

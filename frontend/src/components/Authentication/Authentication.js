@@ -135,8 +135,8 @@ const Authentication = ({ login, setShowSpinner, setWarning }) => {
       const response = await axios.post('guest')
 
       setShowSpinner(false)
-      login(response.data.token, response.data.expiration)
       emptyFields()
+      login(response.data.token, response.data.expiration)
     } catch (error) {
       setShowSpinner(false)
 
