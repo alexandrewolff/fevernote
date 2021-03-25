@@ -7,8 +7,8 @@ import './minireset.css'
 import './index.scss'
 import App from './App'
 
-axios.defaults.baseURL = 'http://localhost:8000/api'
-axios.defaults.timeout = 8000
+axios.defaults.baseURL = 'https://wolff-fevernote.herokuapp.com/api'
+axios.defaults.timeout = 20000
 
 ReactDOM.render(
   <React.StrictMode>
