@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.0",
-    "validator": "^13.5.2"
+    "validator": "^13.5.2",
+    "woke-dyno": "0.0.4"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",

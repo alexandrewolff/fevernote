@@ -10,7 +10,7 @@ exports.sendSignupEmail = async ({ email, host, token }) => {
       subject: 'Thanks for trying my app Fevernote !',
       text: `
         Welcome to Fevernote.\n
-        Please verify your account by clicking the following link:\nhttp://${host}/verify/${token}\n
+        Please verify your account by clicking the following link:\n${host}/verify/${token}\n
         And let me know what you think about it !
       `
     })
